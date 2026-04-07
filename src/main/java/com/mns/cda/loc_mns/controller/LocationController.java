@@ -13,37 +13,33 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/location")
 public class LocationController {
 
     @Autowired
     protected LocationService service;
 
-    @GetMapping("/")
-    public String showHome() {
-        return "C'est l'Application !";
-    }
-
-    @GetMapping("/location/list")
+    @GetMapping("/list")
     public List<LocationDto> getAll() {
         return service.getAllLocations();
     }
 
-    @GetMapping("/location/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Location> get(@PathVariable int id) {
         return service.getLocation(id);
     }
 
-    @PostMapping("/location")
+    @PostMapping("/")
     public ResponseEntity<Location> create(@RequestBody Location newLocation) {
         return service.createLocation(newLocation);
     }
 
-    @DeleteMapping("/location/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteLocation(id);
     }
 
-    @PutMapping("/location/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Location locationToUpdate) {
         return service.updateLocation(id, locationToUpdate);
