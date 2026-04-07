@@ -1,7 +1,9 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.mns.cda.loc_mns.dao.LocationDao;
+import com.mns.cda.loc_mns.dto.LocationDto;
 import com.mns.cda.loc_mns.model.Location;
+import com.mns.cda.loc_mns.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import java.util.Optional;
 public class LocationController {
 
     @Autowired
-    protected LocationDao locationDao;
+    protected LocationService service;
 
     @GetMapping("/")
     public String showHome() {
@@ -22,52 +24,29 @@ public class LocationController {
     }
 
     @GetMapping("/location/list")
-    public List<Location> getAll() {
-        return locationDao.findAll();
+    public List<LocationDto> getAll() {
+        return service.getAllLocations();
     }
 
     @GetMapping("/location/{id}")
     public ResponseEntity<Location> get(@PathVariable int id) {
-        Optional<Location> optionalLocation = locationDao.findById(id);
-        if (optionalLocation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(optionalLocation.get(), HttpStatus.OK);
+        return service.getLocation(id);
     }
 
     @PostMapping("/location")
     public ResponseEntity<Location> create(@RequestBody Location newLocation) {
-        newLocation.setId(null);
-        locationDao.save(newLocation);
-        return new ResponseEntity<>(newLocation, HttpStatus.CREATED);
+        return service.createLocation(newLocation);
     }
 
     @DeleteMapping("/location/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        Optional<Location> optionalLocation = locationDao.findById(id);
-
-        if (optionalLocation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        locationDao.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return service.deleteLocation(id);
     }
 
     @PutMapping("/location/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Location locationToUpdate) {
-        Optional<Location> optionalLocation = locationDao.findById(id);
-
-        if (optionalLocation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        // On écrase l'id du JSON par celui en paramètre
-        locationToUpdate.setId(id);
-        locationDao.save(locationToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return service.updateLocation(id, locationToUpdate);
     }
 
 }
