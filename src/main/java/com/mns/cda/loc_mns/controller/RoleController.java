@@ -10,32 +10,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/role")
 public class RoleController {
 
     @Autowired
     protected RoleService service;
 
-    @GetMapping("/role/list")
+    @GetMapping("/list")
     public List<RoleDto> getAll() {
         return service.getAllRoles();
     }
 
-    @GetMapping("/role/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Role> get(@PathVariable int id) {
         return service.getRole(id);
     }
 
-    @PostMapping("/role")
+    @PostMapping("")
     public ResponseEntity<Role> create(@RequestBody Role newRole) {
         return service.createRole(newRole);
     }
 
-    @DeleteMapping("/role/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteRole(id);
     }
 
-    @PutMapping("/role/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Role roleToUpdate) {
         return service.updateRole(id, roleToUpdate);

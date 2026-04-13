@@ -29,7 +29,7 @@ public class LocationController {
         return service.getLocation(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<Location> create(@RequestBody Location newLocation) {
         return service.createLocation(newLocation);
     }
