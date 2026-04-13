@@ -7,3 +7,7 @@ INSERT INTO role (name) VALUES ('User'),
 INSERT INTO type (name) VALUES ('Tour'),
                                ('PC portable'),
                                ('Ecran');
+INSERT INTO state (name) VALUES ('Neuf'),
+                                ('Bon état'),
+                                ('fonctionnel'),
+                                ('non-fonctionnel');;
