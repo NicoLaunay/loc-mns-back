@@ -4,3 +4,6 @@ INSERT INTO location (name) VALUES ('Salle 203'),
 
 INSERT INTO role (name) VALUES ('User'),
                                ('Admin');
+INSERT INTO type (name) VALUES ('Tour'),
+                               ('PC portable'),
+                               ('Ecran');
