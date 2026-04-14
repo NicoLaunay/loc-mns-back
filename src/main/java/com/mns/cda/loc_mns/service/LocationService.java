@@ -1,15 +1,13 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.LocationDao;
-import com.mns.cda.loc_mns.dto.LocationDto;
 import com.mns.cda.loc_mns.model.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.Optional;

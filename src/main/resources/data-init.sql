@@ -22,4 +22,5 @@ INSERT INTO accreditation_type (accreditation_id, type_id) VALUES ('1', '1'),
                                                                   ('1', '3'),
                                                                   ('2', '1');
 INSERT INTO documentation (title, url) VALUES ('Livret PC', 'www.tuto.com'),
-                                        ('Vidéo tuto PC', 'www.tuto.com');
+                                              ('Vidéo tuto PC', 'www.tuto.com');
+INSERT INTO request (date, content) VALUES ('02/03/2026', 'le PC ne fonctionne plus');

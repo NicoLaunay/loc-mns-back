@@ -1,19 +1,14 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.dao.LocationDao;
-import com.mns.cda.loc_mns.dto.LocationDto;
 import com.mns.cda.loc_mns.model.Location;
 import com.mns.cda.loc_mns.service.LocationService;
 import com.mns.cda.loc_mns.view.LocationView;
-import com.mns.cda.loc_mns.view.TypeView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/location")

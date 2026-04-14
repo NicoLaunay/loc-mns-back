@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.RoleDao;
-import com.mns.cda.loc_mns.dto.RoleDto;
 import com.mns.cda.loc_mns.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

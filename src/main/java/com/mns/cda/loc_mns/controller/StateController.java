@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.dto.StateDto;
 import com.mns.cda.loc_mns.model.State;
 import com.mns.cda.loc_mns.service.StateService;
 import com.mns.cda.loc_mns.view.StateView;

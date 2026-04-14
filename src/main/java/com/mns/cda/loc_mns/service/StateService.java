@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.StateDao;
-import com.mns.cda.loc_mns.dto.StateDto;
 import com.mns.cda.loc_mns.model.State;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

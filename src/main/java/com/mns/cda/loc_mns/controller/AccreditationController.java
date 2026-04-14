@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.dto.AccreditationDto;
 import com.mns.cda.loc_mns.model.Accreditation;
 import com.mns.cda.loc_mns.service.AccreditationService;
 import com.mns.cda.loc_mns.view.AccreditationView;

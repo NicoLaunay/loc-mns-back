@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.dto.RoleDto;
 import com.mns.cda.loc_mns.model.Role;
 import com.mns.cda.loc_mns.service.RoleService;
 import com.mns.cda.loc_mns.view.RoleView;
