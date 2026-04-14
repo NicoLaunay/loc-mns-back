@@ -4,10 +4,20 @@ INSERT INTO location (name) VALUES ('Salle 203'),
 
 INSERT INTO role (name) VALUES ('User'),
                                ('Admin');
+
 INSERT INTO type (name) VALUES ('Tour'),
                                ('PC portable'),
                                ('Ecran');
+
 INSERT INTO state (name) VALUES ('Neuf'),
                                 ('Bon état'),
                                 ('fonctionnel'),
-                                ('non-fonctionnel');;
+                                ('non-fonctionnel');
+
+INSERT INTO accreditation DEFAULT VALUES;
+INSERT INTO accreditation DEFAULT VALUES;
+
+INSERT INTO accreditation_type (accreditation_id, type_id) VALUES ('1', '1'),
+                                                                  ('1', '2'),
+                                                                  ('1', '3'),
+                                                                  ('2', '1');

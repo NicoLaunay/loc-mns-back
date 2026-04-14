@@ -19,11 +19,8 @@ public class StateService {
     @Autowired
     protected StateDao stateDao;
 
-    public List<StateDto> getAllStates() {
-        return stateDao.findAll()
-                .stream()
-                .map(state -> new StateDto(state.getId(), state.getName()))
-                .toList();
+    public List<State> getAllStates() {
+        return stateDao.findAll();
     }
 
     public ResponseEntity<State> getState(int id) {

@@ -19,11 +19,8 @@ public class RoleService {
     @Autowired
     protected RoleDao roleDao;
 
-    public List<RoleDto> getAllRoles() {
-        return roleDao.findAll()
-                .stream()
-                .map(role -> new RoleDto(role.getId(), role.getName()))
-                .toList();
+    public List<Role> getAllRoles() {
+        return roleDao.findAll();
     }
 
     public ResponseEntity<Role> getRole(int id) {

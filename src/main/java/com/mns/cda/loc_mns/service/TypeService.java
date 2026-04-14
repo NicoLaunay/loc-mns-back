@@ -19,11 +19,8 @@ public class TypeService {
     @Autowired
     protected TypeDao typeDao;
 
-    public List<TypeDto> getAllTypes() {
-        return typeDao.findAll()
-                .stream()
-                .map(type -> new TypeDto(type.getId(), type.getName()))
-                .toList();
+    public List<Type> getAllTypes() {
+        return typeDao.findAll();
     }
 
     public ResponseEntity<Type> getType(int id) {

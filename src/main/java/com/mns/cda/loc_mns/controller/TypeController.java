@@ -1,8 +1,10 @@
 package com.mns.cda.loc_mns.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.dto.TypeDto;
 import com.mns.cda.loc_mns.model.Type;
 import com.mns.cda.loc_mns.service.TypeService;
+import com.mns.cda.loc_mns.view.TypeView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +19,19 @@ public class TypeController {
     protected TypeService service;
 
     @GetMapping("/list")
-    public List<TypeDto> getAll() {
+    @JsonView(TypeView.class)
+    public List<Type> getAll() {
         return service.getAllTypes();
     }
 
     @GetMapping("/{id}")
+    @JsonView(TypeView.class)
     public ResponseEntity<Type> get(@PathVariable int id) {
         return service.getType(id);
     }
 
     @PostMapping("")
+    @JsonView(TypeView.class)
     public ResponseEntity<Type> create(@RequestBody Type newType) {
         return service.createType(newType);
     }

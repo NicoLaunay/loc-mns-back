@@ -21,11 +21,8 @@ public class LocationService {
     @Autowired
     protected LocationDao locationDao;
 
-    public List<LocationDto> getAllLocations() {
-        return locationDao.findAll()
-                .stream()
-                .map(location -> new LocationDto(location.getId(), location.getName()))
-                .toList();
+    public List<Location> getAllLocations() {
+        return locationDao.findAll();
     }
 
     public ResponseEntity<Location> getLocation(int id) {
