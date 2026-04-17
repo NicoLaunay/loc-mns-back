@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.Accreditation;
 import com.mns.cda.loc_mns.service.AccreditationService;
 import com.mns.cda.loc_mns.view.AccreditationView;
+import com.mns.cda.loc_mns.view.Views;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,25 +15,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/accreditation")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AccreditationController {
 
-    @Autowired
-    protected AccreditationService service;
+    protected final AccreditationService service;
 
     @GetMapping("/list")
-    @JsonView(AccreditationView.class)
+    @JsonView(Views.Read.class)
     public List<Accreditation> getAll() {
         return service.getAllAccreditations();
     }
 
     @GetMapping("/{id}")
-    @JsonView(AccreditationView.class)
+    @JsonView(Views.Read.class)
     public ResponseEntity<Accreditation> get(@PathVariable int id) {
         return service.getAccreditation(id);
     }
 
     @PostMapping("")
-    @JsonView(AccreditationView.class)
+    @JsonView(Views.Create.class)
     public ResponseEntity<Accreditation> create(@RequestBody Accreditation newAccreditation) {
         return service.createAccreditation(newAccreditation);
     }
@@ -42,6 +44,7 @@ public class AccreditationController {
     }
 
     @PutMapping("/{id}")
+    @JsonView(Views.Update.class)
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Accreditation accreditationToUpdate) {
         return service.updateAccreditation(id, accreditationToUpdate);

@@ -3,6 +3,7 @@ package com.mns.cda.loc_mns.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AccreditationView;
 import com.mns.cda.loc_mns.view.TypeView;
+import com.mns.cda.loc_mns.view.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,8 +24,15 @@ public class Accreditation {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({AccreditationView.class, TypeView.class})
+    @JsonView(Views.Read.class)
     protected Integer id;
+
+    @JsonView({Views.Read.class, Views.Create.class, Views.Update.class})
+    @Length(min = 3, max = 10)
+    protected String name;
+
+    @JsonView({Views.Create.class, Views.Update.class})
+    protected List<Integer> borrowedTypesIds;
 
     @ManyToMany
     @JoinTable(
@@ -33,10 +41,6 @@ public class Accreditation {
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonView(AccreditationView.class)
+    @JsonView(Views.Read.class)
     protected List<Type> borrowedTypes;
-
-    @JsonView(AccreditationView.class)
-    @Length(min = 3, max = 10)
-    protected String name;
 }
