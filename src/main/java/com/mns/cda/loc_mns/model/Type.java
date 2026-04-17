@@ -1,10 +1,5 @@
 package com.mns.cda.loc_mns.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.AccreditationView;
-import com.mns.cda.loc_mns.view.CompositionView;
-import com.mns.cda.loc_mns.view.TypeView;
-import com.mns.cda.loc_mns.view.Views;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,10 +19,8 @@ public class Type {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({Views.Read.class})
     protected Integer id;
 
     @NotBlank
-    @JsonView({Views.Read.class, Views.Create.class, Views.Update.class})
     protected String name;
 }

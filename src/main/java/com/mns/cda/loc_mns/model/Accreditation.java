@@ -1,8 +1,6 @@
 package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.AccreditationView;
-import com.mns.cda.loc_mns.view.TypeView;
 import com.mns.cda.loc_mns.view.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

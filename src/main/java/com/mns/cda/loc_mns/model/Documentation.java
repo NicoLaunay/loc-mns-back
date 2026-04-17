@@ -1,7 +1,5 @@
 package com.mns.cda.loc_mns.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.DocumentationView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,14 +19,11 @@ public class Documentation {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(DocumentationView.class)
     protected Integer id;
 
     @NotBlank
-    @JsonView(DocumentationView.class)
     protected String title;
 
     @NotBlank
-    @JsonView(DocumentationView.class)
     protected String url;
 }

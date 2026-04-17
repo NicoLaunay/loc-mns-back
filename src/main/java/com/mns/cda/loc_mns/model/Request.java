@@ -1,7 +1,5 @@
 package com.mns.cda.loc_mns.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,14 +19,11 @@ public class Request {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(RequestView.class)
     protected Integer id;
 
     @NotBlank
-    @JsonView(RequestView.class)
     protected String date;
 
     @NotBlank
-    @JsonView(RequestView.class)
     protected String content;
 }
