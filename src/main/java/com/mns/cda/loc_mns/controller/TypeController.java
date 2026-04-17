@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/type")
+@CrossOrigin
 public class TypeController {
 
     @Autowired
