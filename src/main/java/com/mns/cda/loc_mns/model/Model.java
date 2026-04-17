@@ -6,12 +6,14 @@ import com.mns.cda.loc_mns.view.ModelView;
 import com.mns.cda.loc_mns.view.RoleView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class Model {
 
     protected Boolean isComponent;
 
-    @NotBlank
+    @NotNull
     @ManyToOne
     protected Type type;
 
@@ -46,15 +48,11 @@ public class Model {
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected List<Documentation> documentations;
 
-    @ManyToMany
-    @JoinTable(
-            name = "model_componentModel",
-            joinColumns = @JoinColumn(name = "model_id"),
-            inverseJoinColumns = @JoinColumn(name = "componentModel_id")
-    )
+    @OneToMany(mappedBy = "parent")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    protected List<Model> components;
+    protected List<Composition> components;
 
-    @ManyToMany(mappedBy = "components")
-    protected List<Model> parents;
+    @OneToMany(mappedBy = "component")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    protected List<Composition> parents;
 }

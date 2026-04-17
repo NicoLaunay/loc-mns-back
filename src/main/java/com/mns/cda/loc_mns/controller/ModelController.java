@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/model")
+@CrossOrigin
 public class ModelController {
 
     @Autowired
