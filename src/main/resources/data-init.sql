@@ -7,7 +7,8 @@ INSERT INTO role (name) VALUES ('User'),
 
 INSERT INTO type (name) VALUES ('Tour'),
                                ('PC portable'),
-                               ('Ecran');
+                               ('Ecran'),
+                               ('GPU');
 
 INSERT INTO state (name) VALUES ('Neuf'),
                                 ('Bon état'),
@@ -24,3 +25,8 @@ INSERT INTO accreditation_type (accreditation_id, type_id) VALUES ('1', '1'),
 INSERT INTO documentation (title, url) VALUES ('Livret PC', 'www.tuto.com'),
                                               ('Vidéo tuto PC', 'www.tuto.com');
 INSERT INTO request (date, content) VALUES ('02/03/2026', 'le PC ne fonctionne plus');
+
+INSERT INTO model (is_component, type_id, description, name) VALUES (false, 2, 'description', 'Lenovo 35X'),
+                                                                    (true, 4, 'description', 'GeForce 4080');
+
+INSERT INTO composition (parent_id, component_id, amount) VALUES (1, 2, 1)
