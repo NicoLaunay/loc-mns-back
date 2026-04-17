@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AccreditationView;
 import com.mns.cda.loc_mns.view.TypeView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -35,4 +35,8 @@ public class Accreditation {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonView(AccreditationView.class)
     protected List<Type> borrowedTypes;
+
+    @JsonView(AccreditationView.class)
+    @Length(min = 3, max = 10)
+    protected String name;
 }
