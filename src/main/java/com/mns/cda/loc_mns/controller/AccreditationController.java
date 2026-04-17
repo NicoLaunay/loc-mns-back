@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accreditation")
+@CrossOrigin
 public class AccreditationController {
 
     @Autowired

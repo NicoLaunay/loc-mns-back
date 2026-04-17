@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/location")
+@CrossOrigin
 public class LocationController {
 
     @Autowired
