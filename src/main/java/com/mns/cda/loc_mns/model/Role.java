@@ -1,7 +1,6 @@
 package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.LocationView;
 import com.mns.cda.loc_mns.view.RoleView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

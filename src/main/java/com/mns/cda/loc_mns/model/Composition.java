@@ -2,19 +2,15 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
-import com.mns.cda.loc_mns.view.ModelView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter // Crée les Getters
 @Setter // Crée les Setters

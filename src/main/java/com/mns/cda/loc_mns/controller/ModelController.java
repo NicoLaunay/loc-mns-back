@@ -1,13 +1,9 @@
 package com.mns.cda.loc_mns.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.dto.ModelDto;
-import com.mns.cda.loc_mns.dto.ModelLightDto;
-import com.mns.cda.loc_mns.model.Documentation;
 import com.mns.cda.loc_mns.model.Model;
 import com.mns.cda.loc_mns.model.Type;
 import com.mns.cda.loc_mns.service.ModelService;
-import com.mns.cda.loc_mns.view.ModelView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
