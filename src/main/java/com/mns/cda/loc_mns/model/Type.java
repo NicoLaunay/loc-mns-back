@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AccreditationView;
+import com.mns.cda.loc_mns.view.CompositionView;
 import com.mns.cda.loc_mns.view.TypeView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,6 +27,6 @@ public class Type {
     protected Integer id;
 
     @NotBlank
-    @JsonView({TypeView.class, AccreditationView.class})
+    @JsonView({TypeView.class, AccreditationView.class, CompositionView.class})
     protected String name;
 }

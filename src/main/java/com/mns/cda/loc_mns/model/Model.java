@@ -1,5 +1,7 @@
 package com.mns.cda.loc_mns.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.view.CompositionView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +26,7 @@ public class Model {
     protected Integer id;
 
     @NotBlank
+    @JsonView(CompositionView.class)
     protected String name;
 
     protected String description;
@@ -32,6 +35,7 @@ public class Model {
 
     @NotNull
     @ManyToOne
+    @JsonView(CompositionView.class)
     protected Type type;
 
     @ManyToMany
