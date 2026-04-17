@@ -1,13 +1,10 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.AccreditationDao;
-import com.mns.cda.loc_mns.dao.RoleDao;
 import com.mns.cda.loc_mns.dao.TypeDao;
 import com.mns.cda.loc_mns.model.Accreditation;
-import com.mns.cda.loc_mns.model.Role;
 import com.mns.cda.loc_mns.model.Type;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
