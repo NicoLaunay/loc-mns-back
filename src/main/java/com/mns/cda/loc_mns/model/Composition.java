@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
+import com.mns.cda.loc_mns.view.EquipmentView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,7 +32,7 @@ public class Composition {
         Integer componentId;
     }
 
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class, EquipmentView.class})
     protected int amount = 1;
 
     @EmbeddedId
@@ -48,7 +49,7 @@ public class Composition {
     @ManyToOne
     @MapsId("componentId")
     @JoinColumn(name = "component_id")
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class, EquipmentView.class})
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected Model component;
 

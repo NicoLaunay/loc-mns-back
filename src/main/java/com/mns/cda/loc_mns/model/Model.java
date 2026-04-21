@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
+import com.mns.cda.loc_mns.view.EquipmentView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +27,7 @@ public class Model {
     protected Integer id;
 
     @NotBlank
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class, EquipmentView.class})
     protected String name;
 
     protected String description;
@@ -35,7 +36,7 @@ public class Model {
 
     @NotNull
     @ManyToOne
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class, EquipmentView.class})
     protected Type type;
 
     @ManyToMany
@@ -45,10 +46,12 @@ public class Model {
             inverseJoinColumns = @JoinColumn(name = "documentation_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonView(EquipmentView.class)
     protected List<Documentation> documentations;
 
     @OneToMany(mappedBy = "parent")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonView(EquipmentView.class)
     protected List<Composition> components;
 
     @OneToMany(mappedBy = "component")

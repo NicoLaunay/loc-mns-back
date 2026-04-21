@@ -43,19 +43,19 @@ public class ModelController {
                                        @RequestBody Model modelToUpdate) {
         return service.updateModel(id, modelToUpdate);
     }
-
-    @GetMapping("/test")
-    public ModelDto test() {
-        return new ModelDto(
-                1,
-                "name",
-                "description",
-                false,
-                new Type(),
-                List.of(),
-                List.of(),
-                List.of()
-                );
-    }
+//
+//    @GetMapping("/test")
+//    public ModelDto test() {
+//        return new ModelDto(
+//                1,
+//                "name",
+//                "description",
+//                false,
+//                new Type(),
+//                List.of(),
+//                List.of(),
+//                List.of()
+//                );
+//    }
 
 }

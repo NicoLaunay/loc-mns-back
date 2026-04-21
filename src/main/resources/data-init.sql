@@ -29,4 +29,9 @@ INSERT INTO request (date, content) VALUES ('02/03/2026', 'le PC ne fonctionne p
 INSERT INTO model (is_component, type_id, description, name) VALUES (false, 2, 'description', 'Lenovo 35X'),
                                                                     (true, 4, 'description', 'GeForce 4080');
 
-INSERT INTO composition (parent_id, component_id, amount) VALUES (1, 2, 1)
+INSERT INTO composition (parent_id, component_id, amount) VALUES (1, 2, 1);
+
+INSERT INTO app_user (name, surname, email, password, accreditation_id) VALUES ('Nicolas', 'Launay', 'nicolas.launay@email.com', '1234', 1),
+                                                                               ('Celia', 'Godfrin', 'celia.godfrin@email.com', '1234', 2);
+
+INSERT INTO equipment (name, condition, model_id, location_id) VALUES ('PC 1', 'éraflures sur capot', 1, 3)

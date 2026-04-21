@@ -1,5 +1,7 @@
 package com.mns.cda.loc_mns.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.view.AppUserView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,5 +24,6 @@ public class Role {
     protected Integer id;
 
     @NotBlank
+    @JsonView(AppUserView.class)
     protected String name;
 }

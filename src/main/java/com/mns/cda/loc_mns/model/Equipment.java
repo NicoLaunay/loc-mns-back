@@ -2,10 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.EquipmentView;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,13 +14,25 @@ import lombok.Setter;
 @AllArgsConstructor // Crée un constructeur avec tous les attributs
 @NoArgsConstructor // Crée un constructeur sans attributs
 @Entity
-public class Type {
+public class Equipment {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(EquipmentView.class)
     protected Integer id;
 
     @NotBlank
     @JsonView(EquipmentView.class)
     protected String name;
+
+    @JsonView(EquipmentView.class)
+    protected String condition;
+
+    @ManyToOne
+    @JsonView(EquipmentView.class)
+    protected Model model;
+
+    @ManyToOne
+    @JsonView(EquipmentView.class)
+    protected Location location;
 }
