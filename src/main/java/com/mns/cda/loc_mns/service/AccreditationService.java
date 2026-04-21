@@ -35,8 +35,6 @@ public class AccreditationService {
     public ResponseEntity<Accreditation> createAccreditation(Accreditation newAccreditation) {
         newAccreditation.setId(null);
 
-        updateBorrowedTypes(newAccreditation);
-
         accreditationDao.save(newAccreditation);
         return new ResponseEntity<>(newAccreditation, HttpStatus.CREATED);
     }
@@ -62,22 +60,8 @@ public class AccreditationService {
         // On écrase l'id du JSON par celui en paramètre
         accreditationToUpdate.setId(id);
 
-        updateBorrowedTypes(accreditationToUpdate);
-
         accreditationDao.save(accreditationToUpdate);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    private Accreditation updateBorrowedTypes(Accreditation accreditation) {
-        List<Type> newBorrowedTypes = new ArrayList<>();
-
-        for (Integer typeId:accreditation.getBorrowedTypesIds()) {
-            Type type = this.typeDao.findById(typeId)
-                    .orElseThrow(() -> new RuntimeException("Il n'existe pas de type avec cet id : " + typeId));;
-            newBorrowedTypes.add(type);
-        }
-        accreditation.setBorrowedTypes(newBorrowedTypes);
-        return accreditation;
     }
 }

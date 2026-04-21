@@ -22,15 +22,10 @@ public class Accreditation {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.Read.class)
     protected Integer id;
 
-    @JsonView({Views.Read.class, Views.Create.class, Views.Update.class})
     @Length(min = 3, max = 10)
     protected String name;
-
-    @JsonView({Views.Create.class, Views.Update.class})
-    protected List<Integer> borrowedTypesIds;
 
     @ManyToMany
     @JoinTable(
@@ -39,6 +34,5 @@ public class Accreditation {
             inverseJoinColumns = @JoinColumn(name = "type_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonView(Views.Read.class)
     protected List<Type> borrowedTypes;
 }

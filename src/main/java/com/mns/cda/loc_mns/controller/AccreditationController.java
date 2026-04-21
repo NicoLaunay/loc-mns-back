@@ -21,19 +21,16 @@ public class AccreditationController {
     protected final AccreditationService service;
 
     @GetMapping("/list")
-    @JsonView(Views.Read.class)
     public List<Accreditation> getAll() {
         return service.getAllAccreditations();
     }
 
     @GetMapping("/{id}")
-    @JsonView(Views.Read.class)
     public ResponseEntity<Accreditation> get(@PathVariable int id) {
         return service.getAccreditation(id);
     }
 
     @PostMapping("")
-    @JsonView(Views.Create.class)
     public ResponseEntity<Accreditation> create(@RequestBody Accreditation newAccreditation) {
         return service.createAccreditation(newAccreditation);
     }
