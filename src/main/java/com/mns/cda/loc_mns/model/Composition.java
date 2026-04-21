@@ -24,8 +24,10 @@ public class Composition {
     @NoArgsConstructor
     public static class Key implements Serializable {
         @Column(name = "parent_id")
+        @JsonView(CompositionView.class)
         Integer parentId;
         @Column(name = "component_id")
+        @JsonView(CompositionView.class)
         Integer componentId;
     }
 
@@ -33,6 +35,7 @@ public class Composition {
     protected int amount = 1;
 
     @EmbeddedId
+    @JsonView(CompositionView.class)
     private Key id;
 
     @ManyToOne

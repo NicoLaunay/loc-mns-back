@@ -24,9 +24,10 @@ public class CompositionController {
         return service.getAllCompositions();
     }
 
-    @GetMapping("/{key}")
+    @GetMapping("/{parentId}/{componentId}")
     @JsonView(CompositionView.class)
-    public ResponseEntity<Composition> get(@PathVariable Composition.Key key) {
+    public ResponseEntity<Composition> get(@PathVariable int parentId, @PathVariable int componentId) {
+        Composition.Key key = new Composition.Key(parentId, componentId);
         return service.getComposition(key);
     }
 
@@ -36,14 +37,17 @@ public class CompositionController {
         return service.createComposition(newComposition);
     }
 
-    @DeleteMapping("/{key}")
-    public ResponseEntity<Void> delete(@PathVariable Composition.Key key) {
+    @DeleteMapping("/{parentId}/{componentId}")
+    public ResponseEntity<Void> delete(@PathVariable int parentId, @PathVariable int componentId) {
+        Composition.Key key = new Composition.Key(parentId, componentId);
         return service.deleteComposition(key);
     }
 
-    @PutMapping("/{key}")
-    public ResponseEntity<Void> update(@PathVariable Composition.Key key,
+    @PutMapping("/{parentId}/{componentId}")
+    public ResponseEntity<Void> update(@PathVariable int parentId,
+                                       @PathVariable int componentId,
                                        @RequestBody Composition compositionToUpdate) {
+        Composition.Key key = new Composition.Key(parentId, componentId);
         return service.updateComposition(key, compositionToUpdate);
     }
 
