@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,7 @@ public class Composition {
         Integer componentId;
     }
 
+    @NotBlank
     @JsonView({CompositionView.class, EquipmentView.class})
     protected int amount = 1;
 

@@ -5,6 +5,7 @@ import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +26,12 @@ public class Loan {
     @JsonView(LoanView.class)
     protected Integer id;
 
+    @NotNull
     @DateTimeFormat
     @JsonView(LoanView.class)
     protected Date startDate;
+
+    @NotNull
     @DateTimeFormat
     @JsonView(LoanView.class)
     protected Date endDate;
@@ -36,10 +40,12 @@ public class Loan {
     @JsonView(LoanView.class)
     protected Date returnDate;
 
+    @NotNull
     @ManyToOne
     @JsonView(LoanView.class)
     protected AppUser user;
 
+    @NotNull
     @ManyToOne
     @JsonView(LoanView.class)
     protected Equipment equipment;

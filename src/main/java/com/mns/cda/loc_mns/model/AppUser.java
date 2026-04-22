@@ -33,12 +33,12 @@ public class AppUser {
     @JsonView({AppUserView.class, LoanView.class})
     protected String surname;
 
-    @NotNull
+    @NotBlank
     @Email
     @JsonView({AppUserView.class, LoanView.class})
     protected String email;
 
-    @NotNull
+    @NotBlank
     protected String password;
 
     @ManyToOne

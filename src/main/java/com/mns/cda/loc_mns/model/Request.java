@@ -2,10 +2,13 @@ package com.mns.cda.loc_mns.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 @Getter // Crée les Getters
 @Setter // Crée les Setters
@@ -18,12 +21,12 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @NotBlank
-    protected String date;
+    @NotNull
+    protected Date date;
 
     @NotBlank
     protected String content;
 
-    @ManyToOne
+    @NotNull
     protected Loan loan;
 }
