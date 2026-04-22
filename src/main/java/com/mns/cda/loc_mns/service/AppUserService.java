@@ -18,10 +18,22 @@ public class AppUserService {
     @Autowired
     protected AppUserDao appUserDao;
 
+    /**
+     * Récupère l'ensemble des utilisateurs enregistrés en base de données.
+     *
+     * @return une liste non nulle d'utilisateurs, éventuellement vide si aucune donnée n'est présente
+     */
     public List<AppUser> getAllAppUsers() {
         return appUserDao.findAll();
     }
 
+    /**
+     * Récupère un utilisateur à partir de son identifiant.
+     *
+     * @param id identifiant unique de l'utilisateur recherché
+     * @return une réponse HTTP contenant l'utilisateur si il existe (200 OK),
+     *         ou un statut 404 (NOT_FOUND) si aucun utilisateur ne correspond à cet identifiant
+     */
     public ResponseEntity<AppUser> getAppUser(int id) {
         Optional<AppUser> optionalAppUser = appUserDao.findById(id);
         if (optionalAppUser.isEmpty()) {
@@ -30,12 +42,25 @@ public class AppUserService {
         return new ResponseEntity<>(optionalAppUser.get(), HttpStatus.OK);
     }
 
+    /**
+     * Crée un nouvel utilisateur en base de données.
+     *
+     * @param newAppUser données de l'utilisateur à créer
+     * @return une réponse HTTP contenant l'utilisateur créé (201 CREATED)
+     */
     public ResponseEntity<AppUser> createAppUser(AppUser newAppUser) {
         newAppUser.setId(null);
         appUserDao.save(newAppUser);
         return new ResponseEntity<>(newAppUser, HttpStatus.CREATED);
     }
 
+    /**
+     * Supprime un utilisateur à partir de son identifiant.
+     *
+     * @param id identifiant unique de l'utilisateur à supprimer
+     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
+     *         ou 404 (NOT_FOUND) si aucun utilisateur ne correspond à cet identifiant
+     */
     public ResponseEntity<Void> deleteAppUser(int id) {
         Optional<AppUser> optionalAppUser = appUserDao.findById(id);
 
@@ -47,6 +72,14 @@ public class AppUserService {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Met à jour un utilisateur existant en remplaçant ses données.
+     *
+     * @param id identifiant unique de l'utilisateur à mettre à jour
+     * @param appUserToUpdate nouvelles données de l'utilisateur
+     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
+     *         ou 404 (NOT_FOUND) si aucun utilisateur ne correspond à cet identifiant
+     */
     public ResponseEntity<Void> updateAppUser(int id, AppUser appUserToUpdate) {
         Optional<AppUser> optionalAppUser = appUserDao.findById(id);
 

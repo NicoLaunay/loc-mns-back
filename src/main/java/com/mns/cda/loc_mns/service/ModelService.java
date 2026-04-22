@@ -24,6 +24,11 @@ public class ModelService {
     private final ModelMapper mapper;
     private final ModelRepository repository;
 
+    /**
+     * Récupère l'ensemble des modèles enregistrés en base de données.
+     *
+     * @return une liste non nulle de modèles sous forme de DTO, éventuellement vide si aucune donnée n'est présente
+     */
     public List<ModelDto> getAllModels() {
         System.out.println(
             repository.findAll()
@@ -37,6 +42,13 @@ public class ModelService {
                 .toList();
     }
 
+    /**
+     * Récupère un modèle à partir de son identifiant.
+     *
+     * @param id identifiant unique du modèle recherché
+     * @return une réponse HTTP contenant le modèle sous forme de DTO si il existe (200 OK),
+     *         ou un statut 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     */
     public ResponseEntity<ModelDto> getModel(int id) {
         Optional<Model> optionalModel = modelDao.findById(id);
         if (optionalModel.isEmpty()) {
@@ -45,12 +57,25 @@ public class ModelService {
         return new ResponseEntity<>(mapper.toDto(optionalModel.get()), HttpStatus.OK);
     }
 
+    /**
+     * Crée un nouveau modèle en base de données.
+     *
+     * @param newModel données du modèle à créer
+     * @return une réponse HTTP contenant le modèle créé sous forme de DTO (201 CREATED)
+     */
     public ResponseEntity<ModelDto> createModel(Model newModel) {
         newModel.setId(null);
         modelDao.save(newModel);
         return new ResponseEntity<>(mapper.toDto(newModel), HttpStatus.CREATED);
     }
 
+    /**
+     * Supprime un modèle à partir de son identifiant.
+     *
+     * @param id identifiant unique du modèle à supprimer
+     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
+     *         ou 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     */
     public ResponseEntity<Void> deleteModel(int id) {
         Optional<Model> optionalModel = modelDao.findById(id);
 
@@ -62,6 +87,14 @@ public class ModelService {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Met à jour un modèle existant en remplaçant ses données.
+     *
+     * @param id identifiant unique du modèle à mettre à jour
+     * @param modelToUpdate nouvelles données du modèle
+     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
+     *         ou 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     */
     public ResponseEntity<Void> updateModel(int id, Model modelToUpdate) {
         Optional<Model> optionalModel = modelDao.findById(id);
 
