@@ -36,7 +36,7 @@ public class Composition {
     protected int amount = 1;
 
     @EmbeddedId
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class, EquipmentView.class})
     private Key id;
 
     @ManyToOne

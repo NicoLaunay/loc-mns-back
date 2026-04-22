@@ -21,6 +21,7 @@ public class Location {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(EquipmentView .class)
     protected Integer id;
 
     @NotBlank

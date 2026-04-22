@@ -34,4 +34,7 @@ INSERT INTO composition (parent_id, component_id, amount) VALUES (1, 2, 1);
 INSERT INTO app_user (name, surname, email, password, accreditation_id) VALUES ('Nicolas', 'Launay', 'nicolas.launay@email.com', '1234', 1),
                                                                                ('Celia', 'Godfrin', 'celia.godfrin@email.com', '1234', 2);
 
-INSERT INTO equipment (name, condition, model_id, location_id) VALUES ('PC 1', 'éraflures sur capot', 1, 3)
+INSERT INTO equipment (name, condition, model_id, location_id) VALUES ('PC 1', 'éraflures sur capot', 1, 3);
+
+INSERT INTO loan (start_date, end_date, return_date, user_id, equipment_id) VALUES
+    ('2026-04-16', '2026-04-16', '2026-04-16', 1, 1);

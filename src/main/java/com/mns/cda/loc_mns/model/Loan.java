@@ -1,51 +1,50 @@
 package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.AppUserView;
+import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 
 @Getter // Crée les Getters
 @Setter // Crée les Setters
 @AllArgsConstructor // Crée un constructeur avec tous les attributs
 @NoArgsConstructor // Crée un constructeur sans attributs
 @Entity
-public class AppUser {
+public class Loan {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView(LoanView.class)
     protected Integer id;
 
-    @NotBlank
-    @JsonView({AppUserView.class, LoanView.class})
-    protected String name;
+    @DateTimeFormat
+    @JsonView(LoanView.class)
+    protected Date startDate;
+    @DateTimeFormat
+    @JsonView(LoanView.class)
+    protected Date endDate;
 
-    @NotBlank
-    @JsonView({AppUserView.class, LoanView.class})
-    protected String surname;
-
-    @NotNull
-    @Email
-    @JsonView({AppUserView.class, LoanView.class})
-    protected String email;
-
-    @NotNull
-    protected String password;
+    @DateTimeFormat
+    @JsonView(LoanView.class)
+    protected Date returnDate;
 
     @ManyToOne
     @JsonView(LoanView.class)
-    protected Accreditation accreditation;
+    protected AppUser user;
 
     @ManyToOne
-    @JsonView({AppUserView.class, LoanView.class})
-    protected Role role;
+    @JsonView(LoanView.class)
+    protected Equipment equipment;
+
+
+
+
 }

@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.EquipmentView;
+import com.mns.cda.loc_mns.view.LoanView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +22,14 @@ public class Documentation {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({EquipmentView.class, LoanView.class})
     protected Integer id;
 
     @NotBlank
-    @JsonView(EquipmentView.class)
+    @JsonView({EquipmentView.class, LoanView.class})
     protected String title;
 
     @NotBlank
-    @JsonView(EquipmentView .class)
+    @JsonView({EquipmentView .class, LoanView.class})
     protected String url;
 }

@@ -21,6 +21,7 @@ public class Role {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(AppUserView.class)
     protected Integer id;
 
     @NotBlank
