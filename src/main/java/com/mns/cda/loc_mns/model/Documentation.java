@@ -25,11 +25,11 @@ public class Documentation {
     @JsonView({EquipmentView.class, LoanView.class})
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Titre ne peut pas être vide")
     @JsonView({EquipmentView.class, LoanView.class})
     protected String title;
 
-    @NotBlank
+    @NotBlank(message = "L'URL ne peut pas être vide")
     @JsonView({EquipmentView .class, LoanView.class})
     protected String url;
 }
