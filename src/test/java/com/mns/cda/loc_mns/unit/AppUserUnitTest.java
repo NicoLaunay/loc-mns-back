@@ -94,4 +94,43 @@ public class AppUserUnitTest {
 
         Assertions.assertTrue(constraintExist, "La contrainte Size sur password n'a pas fonctionné");
     }
+
+    @Test
+    public void validUserWithTooLongPassword_shouldNotBeValid() {
+        AppUser user = new AppUser();
+        user.setPassword("abazfqfqqdgsdgssdgsdgsdgsdgsdgsdgdgsdgsdgsdgs");
+
+        boolean constraintExist = TestUtils.constraintViolationExist(
+                validator.validate(user),
+                "password",
+                "Size");
+
+        Assertions.assertTrue(constraintExist, "La contrainte Size sur password n'a pas fonctionné");
+    }
+
+    @Test
+    public void validUserWithPasswordOnlyLetters_shouldNotBeValid() {
+        AppUser user = new AppUser();
+        user.setPassword("abFRsegssdg");
+
+        boolean constraintExist = TestUtils.constraintViolationExist(
+                validator.validate(user),
+                "password",
+                "Pattern");
+
+        Assertions.assertTrue(constraintExist, "La contrainte Pattern sur password n'a pas fonctionné");
+    }
+
+    @Test
+    public void invalidUserWithValidPassword_shouldBeValid() {
+        AppUser user = new AppUser();
+        user.setPassword("@bCDef6H");
+
+        boolean constraintExist = TestUtils.constraintViolationExist(
+                validator.validate(user),
+                "password",
+                "Pattern");
+
+        Assertions.assertFalse(constraintExist, "La contrainte Pattern sur password n'aurait pas du fonctionner");
+    }
 }
