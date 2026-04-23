@@ -24,7 +24,7 @@ public class Role {
     @JsonView(AppUserView.class)
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom ne peut pas être vide")
     @JsonView(AppUserView.class)
     protected String name;
 }
