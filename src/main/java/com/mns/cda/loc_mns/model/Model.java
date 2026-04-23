@@ -28,7 +28,7 @@ public class Model {
     @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom ne peut pas être vide")
     @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
     protected String name;
 
@@ -37,7 +37,7 @@ public class Model {
 
     protected Boolean isComponent;
 
-    @NotNull
+    @NotNull(message = "Le Type ne peut pas être vide")
     @ManyToOne
     @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
     protected Type type;
