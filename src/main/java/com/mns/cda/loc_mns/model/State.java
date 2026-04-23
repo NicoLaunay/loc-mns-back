@@ -21,6 +21,6 @@ public class State {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom ne peut pas être vide")
     protected String name;
 }
