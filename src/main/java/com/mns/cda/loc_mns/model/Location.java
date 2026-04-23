@@ -24,7 +24,7 @@ public class Location {
     @JsonView(EquipmentView .class)
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom ne peut pas être vide")
     @JsonView(EquipmentView .class)
     protected String name;
 }
