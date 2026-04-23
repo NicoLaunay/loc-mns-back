@@ -57,6 +57,19 @@ public class AppUserUnitTest {
     }
 
     @Test
+    public void validUserWithNotWellFormattedEmail_shouldNotBeValid() {
+        AppUser user = new AppUser();
+        user.setEmail("a.com");
+
+        boolean constraintExist = TestUtils.constraintViolationExist(
+                validator.validate(user),
+                "email",
+                "Email");
+
+        Assertions.assertTrue(constraintExist,"La contrainte Email sur email n'a pas fonctionné");
+    }
+
+    @Test
     public void validUserWithBlankPassword_shouldNotBeValid() {
         AppUser user = new AppUser();
         user.setPassword("");
