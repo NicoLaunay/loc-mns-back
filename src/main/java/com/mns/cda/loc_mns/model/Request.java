@@ -21,12 +21,12 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
-    @NotNull
+    @NotNull(message = "La Date ne peut pas être vide")
     protected Date date;
 
-    @NotBlank
+    @NotBlank(message = "Le Contenu ne peut pas être vide")
     protected String content;
 
-    @NotNull
+    @NotNull(message = "L'Emprunt ne peut pas être vide")
     protected Loan loan;
 }
