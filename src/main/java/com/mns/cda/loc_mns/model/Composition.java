@@ -33,7 +33,7 @@ public class Composition {
         Integer componentId;
     }
 
-    @NotBlank
+    @NotBlank(message = "La quantité de Composant ne peut pas être nulle")
     @JsonView({CompositionView.class, EquipmentView.class})
     protected int amount = 1;
 
