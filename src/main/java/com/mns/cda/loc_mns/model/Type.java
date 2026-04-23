@@ -25,7 +25,7 @@ public class Type {
     @JsonView({EquipmentView.class, LoanView.class})
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom ne peut pas être vide")
     @JsonView({EquipmentView.class, LoanView.class})
     protected String name;
 }
