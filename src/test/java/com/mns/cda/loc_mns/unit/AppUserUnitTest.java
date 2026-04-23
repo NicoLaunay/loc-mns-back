@@ -81,4 +81,17 @@ public class AppUserUnitTest {
 
         Assertions.assertTrue(constraintExist, "La contrainte NotBlank sur password n'a pas fonctionné");
     }
+
+    @Test
+    public void validUserWithTooShortPassword_shouldNotBeValid() {
+        AppUser user = new AppUser();
+        user.setPassword("ab");
+
+        boolean constraintExist = TestUtils.constraintViolationExist(
+                validator.validate(user),
+                "password",
+                "Size");
+
+        Assertions.assertTrue(constraintExist, "La contrainte Size sur password n'a pas fonctionné");
+    }
 }
