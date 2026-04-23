@@ -25,20 +25,20 @@ public class AppUser {
     @JsonView({AppUserView.class, LoanView.class})
     protected Integer id;
 
-    @NotBlank
+    @NotBlank(message = "Le Prénom ne peut pas être vide")
     @JsonView({AppUserView.class, LoanView.class})
     protected String name;
 
-    @NotBlank
+    @NotBlank(message = "Le Nom de Famille ne peut pas être vide")
     @JsonView({AppUserView.class, LoanView.class})
     protected String surname;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "L'Email ne peut pas être vide")
+    @Email(message = "Le format de l'Email n'est pas valide")
     @JsonView({AppUserView.class, LoanView.class})
     protected String email;
 
-    @NotBlank
+    @NotBlank(message = "Le Mot de Passe ne peut pas être vide")
     protected String password;
 
     @ManyToOne
