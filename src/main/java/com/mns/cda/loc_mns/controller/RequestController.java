@@ -1,7 +1,9 @@
 package com.mns.cda.loc_mns.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.Request;
 import com.mns.cda.loc_mns.service.RequestService;
+import com.mns.cda.loc_mns.view.RequestView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,16 +19,19 @@ public class RequestController {
     protected RequestService service;
 
     @GetMapping("/list")
+    @JsonView(RequestView.class)
     public List<Request> getAll() {
         return service.getAllRequests();
     }
 
     @GetMapping("/{id}")
+    @JsonView(RequestView.class)
     public ResponseEntity<Request> get(@PathVariable int id) {
         return service.getRequest(id);
     }
 
     @PostMapping("")
+    @JsonView(RequestView.class)
     public ResponseEntity<Request> create(@RequestBody Request newRequest) {
         return service.createRequest(newRequest);
     }

@@ -3,6 +3,7 @@ package com.mns.cda.loc_mns.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,34 +25,34 @@ public class Loan {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Integer id;
 
     @NotNull(message = "La Date de Début ne peut pas être vide")
     @DateTimeFormat
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Date startDate;
 
     @NotNull(message = "La Date de Fin ne peut pas être vide")
     @DateTimeFormat
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Date endDate;
 
     @DateTimeFormat
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Date returnDate;
 
     @NotNull(message = "L'Utilisateur ne peut pas être vide")
     @ManyToOne
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected AppUser user;
 
     @NotNull(message = "L'Equipement ne peut pas être vide")
     @ManyToOne
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Equipment equipment;
 
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "loan")
     @JsonView(LoanView.class)
     protected List<Request> requests;
 

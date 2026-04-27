@@ -1,5 +1,8 @@
 package com.mns.cda.loc_mns.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,14 +22,19 @@ public class Request {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView({LoanView.class, RequestView.class})
     protected Integer id;
 
     @NotNull(message = "La Date ne peut pas être vide")
+    @JsonView({LoanView.class, RequestView.class})
     protected Date date;
 
     @NotBlank(message = "Le Contenu ne peut pas être vide")
+    @JsonView({LoanView.class, RequestView.class})
     protected String content;
 
+    @ManyToOne
     @NotNull(message = "L'Emprunt ne peut pas être vide")
+    @JsonView(RequestView.class)
     protected Loan loan;
 }

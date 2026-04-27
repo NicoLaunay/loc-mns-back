@@ -3,6 +3,7 @@ package com.mns.cda.loc_mns.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AppUserView;
 import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -21,20 +22,20 @@ public class AppUser {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Integer id;
 
     @NotBlank(message = "Le Prénom ne peut pas être vide")
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected String name;
 
     @NotBlank(message = "Le Nom de Famille ne peut pas être vide")
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected String surname;
 
     @NotBlank(message = "L'Email ne peut pas être vide")
     @Email(message = "Le format de l'Email n'est pas valide")
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected String email;
 
     @NotBlank(message = "Le Mot de Passe ne peut pas être vide")
@@ -43,10 +44,10 @@ public class AppUser {
     protected String password;
 
     @ManyToOne
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, RequestView.class})
     protected Accreditation accreditation;
 
     @ManyToOne
-    @JsonView({AppUserView.class, LoanView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Role role;
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,21 +26,21 @@ public class Model {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class})
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
-    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class})
     protected String name;
 
-    @JsonView({LoanView.class})
+    @JsonView({LoanView.class, RequestView.class})
     protected String description;
 
     protected Boolean isComponent;
 
     @NotNull(message = "Le Type ne peut pas être vide")
     @ManyToOne
-    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class})
     protected Type type;
 
     @ManyToMany
@@ -49,7 +50,7 @@ public class Model {
             inverseJoinColumns = @JoinColumn(name = "documentation_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonView({EquipmentView.class, LoanView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
     protected List<Documentation> documentations;
 
     @OneToMany(mappedBy = "parent")

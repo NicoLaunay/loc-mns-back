@@ -2,6 +2,8 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AppUserView;
+import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,10 +23,10 @@ public class Role {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(AppUserView.class)
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
-    @JsonView(AppUserView.class)
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected String name;
 }
