@@ -24,7 +24,6 @@ INSERT INTO accreditation_type (accreditation_id, type_id) VALUES ('1', '1'),
                                                                   ('2', '1');
 INSERT INTO documentation (title, url) VALUES ('Livret PC', 'www.tuto.com'),
                                               ('Vidéo tuto PC', 'www.tuto.com');
-INSERT INTO request (date, content) VALUES ('02/03/2026', 'le PC ne fonctionne plus');
 
 INSERT INTO model (is_component, type_id, description, name) VALUES (false, 2, 'description', 'Lenovo 35X'),
                                                                     (true, 4, 'description', 'GeForce 4080');
@@ -38,3 +37,5 @@ INSERT INTO equipment (name, condition, model_id, location_id) VALUES ('PC 1', '
 
 INSERT INTO loan (start_date, end_date, return_date, user_id, equipment_id) VALUES
     ('2026-04-16', '2026-04-16', '2026-04-16', 1, 1);
+
+INSERT INTO request (date, content, loan_id) VALUES ('02-03-2026', 'le PC ne fonctionne plus', 1);
