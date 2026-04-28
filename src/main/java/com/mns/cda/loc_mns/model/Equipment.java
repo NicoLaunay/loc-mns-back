@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.view.AppUserView;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
 import com.mns.cda.loc_mns.view.RequestView;
@@ -21,22 +22,22 @@ public class Equipment {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
     protected String name;
 
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
     protected String condition;
 
     @ManyToOne
     @NotNull(message = "Le Modèle ne peut pas être vide")
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
     protected Model model;
 
     @ManyToOne
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
     protected Location location;
 }

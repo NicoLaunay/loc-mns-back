@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
+
 
 @Getter // Crée les Getters
 @Setter // Crée les Setters
@@ -44,10 +46,14 @@ public class AppUser {
     protected String password;
 
     @ManyToOne
-    @JsonView({LoanView.class, RequestView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Accreditation accreditation;
 
     @ManyToOne
     @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Role role;
+
+    @OneToMany(mappedBy = "user")
+    @JsonView(AppUserView.class)
+    protected List<Loan> loans;
 }
