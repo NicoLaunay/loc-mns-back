@@ -52,12 +52,4 @@ public class Loan {
     @ManyToOne
     @JsonView({LoanView.class, RequestView.class, AppUserView.class})
     protected Equipment equipment;
-
-    @OneToMany(mappedBy = "loan")
-    @JsonView({LoanView.class, AppUserView.class})
-    protected List<Request> requests;
-
-
-
-
 }

@@ -53,7 +53,4 @@ public class AppUser {
     @JsonView({AppUserView.class, LoanView.class, RequestView.class})
     protected Role role;
 
-    @OneToMany(mappedBy = "user")
-    @JsonView(AppUserView.class)
-    protected List<Loan> loans;
 }
