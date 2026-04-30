@@ -27,17 +27,17 @@ public class Model {
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
-    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected String name;
 
-    @JsonView({LoanView.class, RequestView.class, AppUserView.class})
+    @JsonView({LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected String description;
 
     protected Boolean isComponent;
 
     @NotNull(message = "Le Type ne peut pas être vide")
     @ManyToOne
-    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected Type type;
 
     @ManyToMany
@@ -47,12 +47,12 @@ public class Model {
             inverseJoinColumns = @JoinColumn(name = "documentation_id")
     )
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected List<Documentation> documentations;
 
     @OneToMany(mappedBy = "parent")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonView(EquipmentView.class)
+    @JsonView({EquipmentView.class, ModificationView.class})
     protected List<Composition> components;
 
     @OneToMany(mappedBy = "component")

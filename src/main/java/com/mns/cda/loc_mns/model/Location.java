@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.EquipmentView;
+import com.mns.cda.loc_mns.view.ModificationView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,6 @@ public class Location {
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
-    @JsonView(EquipmentView .class)
+    @JsonView({EquipmentView .class, ModificationView.class})
     protected String name;
 }

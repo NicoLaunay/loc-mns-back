@@ -1,5 +1,7 @@
 package com.mns.cda.loc_mns.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.view.ModificationView;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +21,10 @@ public class State {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(ModificationView.class)
     protected Integer id;
 
     @NotBlank(message = "Le Nom ne peut pas être vide")
+    @JsonView(ModificationView.class)
     protected String name;
 }

@@ -3,6 +3,7 @@ package com.mns.cda.loc_mns.model;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.CompositionView;
 import com.mns.cda.loc_mns.view.EquipmentView;
+import com.mns.cda.loc_mns.view.ModificationView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -44,14 +45,14 @@ public class Composition {
     @ManyToOne
     @MapsId("parentId")
     @JoinColumn(name = "parent_id")
-    @JsonView(CompositionView.class)
+    @JsonView({CompositionView.class})
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected Model parent;
 
     @ManyToOne
     @MapsId("componentId")
     @JoinColumn(name = "component_id")
-    @JsonView({CompositionView.class, EquipmentView.class})
+    @JsonView({CompositionView.class, EquipmentView.class, ModificationView.class})
     @OnDelete(action = OnDeleteAction.CASCADE)
     protected Model component;
 

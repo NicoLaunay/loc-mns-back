@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.LoanView;
+import com.mns.cda.loc_mns.view.ModificationView;
 import com.mns.cda.loc_mns.view.Views;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,11 +24,11 @@ public class Accreditation {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, ModificationView.class})
     protected Integer id;
 
 //    @Length(min = 3, max = 10)
-    @JsonView(LoanView.class)
+    @JsonView({LoanView.class, ModificationView.class})
     protected String name;
 
     @ManyToMany

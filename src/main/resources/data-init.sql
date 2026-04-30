@@ -39,3 +39,6 @@ INSERT INTO loan (start_date, end_date, return_date, user_id, equipment_id) VALU
     ('2026-04-16', '2026-04-16', '2026-04-16', 1, 1);
 
 INSERT INTO request (date, content, loan_id) VALUES ('02-03-2026', 'le PC ne fonctionne plus', 1);
+
+INSERT INTO modification (date, author_id, equipment_id, new_state_id) VALUES
+    ('2026-04-15', 1, 1, 4);
