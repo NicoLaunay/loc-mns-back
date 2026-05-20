@@ -3,6 +3,7 @@ package com.mns.cda.loc_mns.controller;
 import com.mns.cda.loc_mns.dto.ModelDto;
 import com.mns.cda.loc_mns.model.Model;
 import com.mns.cda.loc_mns.model.Type;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +30,19 @@ public class ModelController {
     }
 
     @PostMapping("")
+    @IsAdmin
     public ResponseEntity<ModelDto> create(@RequestBody Model newModel) {
         return service.createModel(newModel);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteModel(id);
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Model modelToUpdate) {
         return service.updateModel(id, modelToUpdate);

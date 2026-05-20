@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.mns.cda.loc_mns.model.Documentation;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.DocumentationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +28,19 @@ public class DocumentationController {
     }
 
     @PostMapping("")
+    @IsAdmin
     public ResponseEntity<Documentation> create(@RequestBody Documentation newDocumentation) {
         return service.createDocumentation(newDocumentation);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteDocumentation(id);
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Documentation documentationToUpdate) {
         return service.updateDocumentation(id, documentationToUpdate);

@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.Loan;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.LoanService;
 import com.mns.cda.loc_mns.view.LoanView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class LoanController {
 
     @GetMapping("/list")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getAll() {
         return loanService.getAll();
     }
@@ -67,6 +69,7 @@ public class LoanController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return loanService.delete(id);
     }

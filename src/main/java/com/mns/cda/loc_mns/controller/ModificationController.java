@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.Modification;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModificationService;
 import com.mns.cda.loc_mns.view.ModificationView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,28 +21,33 @@ public class ModificationController {
 
     @GetMapping("/list")
     @JsonView(ModificationView.class)
+    @IsAdmin
     public List<Modification> getAll() {
         return service.getAllModifications();
     }
 
     @GetMapping("/{id}")
     @JsonView(ModificationView.class)
+    @IsAdmin
     public ResponseEntity<Modification> get(@PathVariable int id) {
         return service.getModification(id);
     }
 
     @PostMapping("")
     @JsonView(ModificationView.class)
+    @IsAdmin
     public ResponseEntity<Modification> create(@RequestBody Modification newModification) {
         return service.createModification(newModification);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteModification(id);
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Modification modificationToUpdate) {
         return service.updateModification(id, modificationToUpdate);

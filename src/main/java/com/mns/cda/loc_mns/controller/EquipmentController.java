@@ -24,14 +24,12 @@ public class EquipmentController {
 
     @GetMapping("/list")
     @JsonView(EquipmentView.class)
-    @IsAdmin
     public List<Equipment> getAll() {
         return service.getAllEquipments();
     }
 
     @GetMapping("/{id}")
     @JsonView(EquipmentView.class)
-    @IsAdmin
     public ResponseEntity<Equipment> get(@PathVariable int id) {
         return service.getEquipment(id);
     }

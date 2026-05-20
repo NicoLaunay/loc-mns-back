@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.mns.cda.loc_mns.model.Type;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.TypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +28,19 @@ public class TypeController {
     }
 
     @PostMapping("")
+    @IsAdmin
     public ResponseEntity<Type> create(@RequestBody Type newType) {
         return service.createType(newType);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteType(id);
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Type typeToUpdate) {
         return service.updateType(id, typeToUpdate);

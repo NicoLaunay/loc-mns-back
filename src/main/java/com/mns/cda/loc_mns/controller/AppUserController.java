@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.AppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class AppUserController {
 
     @GetMapping("/list")
     @JsonView(AppUserView.class)
+    @IsAdmin
     public List<AppUser> getAll() {
         return service.getAllAppUsers();
     }

@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.mns.cda.loc_mns.model.Role;
+import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,16 +28,19 @@ public class RoleController {
     }
 
     @PostMapping("")
+    @IsAdmin
     public ResponseEntity<Role> create(@RequestBody Role newRole) {
         return service.createRole(newRole);
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteRole(id);
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Role roleToUpdate) {
         return service.updateRole(id, roleToUpdate);
