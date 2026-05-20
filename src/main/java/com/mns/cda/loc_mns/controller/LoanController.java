@@ -16,35 +16,65 @@ import java.util.List;
 public class LoanController {
 
     @Autowired
-    protected LoanService service;
+    protected LoanService loanService;
 
     @GetMapping("/list")
     @JsonView(LoanView.class)
     public List<Loan> getAll() {
-        return service.getAllLoans();
+        return loanService.getAll();
+    }
+
+    @GetMapping("/user{id}")
+    @JsonView(LoanView.class)
+    public List<Loan> getAllByUserId(@PathVariable int id) {
+        return loanService.getAllByUserId(id);
+    }
+
+    @GetMapping("/user{id}/ended")
+    @JsonView(LoanView.class)
+    public List<Loan> getPastByUserId(@PathVariable int id) {
+        return loanService.getPastByUserId(id);
+    }
+
+    @GetMapping("/user{id}/ongoing")
+    @JsonView(LoanView.class)
+    public List<Loan> getOngoingByUserId(@PathVariable int id) {
+        return loanService.getOngoingByUserId(id);
+    }
+
+    @GetMapping("/user{id}/planned")
+    @JsonView(LoanView.class)
+    public List<Loan> getPlannedByUserId(@PathVariable int id) {
+        return loanService.getPlannedByUserId(id);
+    }
+
+    @GetMapping("/user{id}/late")
+    @JsonView(LoanView.class)
+    public List<Loan> getLateByUserId(@PathVariable int id) {
+        return loanService.getLateByUserId(id);
     }
 
     @GetMapping("/{id}")
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> get(@PathVariable int id) {
-        return service.getLoan(id);
+        return loanService.getById(id);
     }
 
     @PostMapping
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> create(@RequestBody Loan newLoan) {
-        return service.createLoan(newLoan);
+        return loanService.create(newLoan);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteLoan(id);
+        return loanService.delete(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Loan loanToUpdate) {
-        return service.updateLoan(id, loanToUpdate);
+        return loanService.update(id, loanToUpdate);
     }
 
 }
