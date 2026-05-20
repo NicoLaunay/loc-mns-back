@@ -15,7 +15,6 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
-
 @Getter // Crée les Getters
 @Setter // Crée les Setters
 @AllArgsConstructor // Crée un constructeur avec tous les attributs

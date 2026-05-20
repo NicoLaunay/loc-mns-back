@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,8 +17,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AppUserService {
 
+    // récupère automatiquement le PasswordEncoder stocké dans le @Bean dans PasswordCOnfig
+    private final PasswordEncoder encoder;
+
     @Autowired
-    protected AppUserDao appUserDao;
+    protected final AppUserDao appUserDao;
 
     /**
      * Récupère l'ensemble des utilisateurs enregistrés en base de données.
@@ -50,6 +55,8 @@ public class AppUserService {
      */
     public ResponseEntity<AppUser> createAppUser(AppUser newAppUser) {
         newAppUser.setId(null);
+        // on remplace le MDP en clair par la version hashée
+        newAppUser.setPassword(encoder.encode(newAppUser.getPassword()));
         appUserDao.save(newAppUser);
         return new ResponseEntity<>(newAppUser, HttpStatus.CREATED);
     }
