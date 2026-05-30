@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,18 @@ public class EquipmentService {
      *
      * @return une liste non nulle d'équipements, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Equipment> getAllEquipments() {
+    public List<Equipment> getAll() {
         return equipmentDao.findAll();
+    }
+
+    /**
+     * Récupère l'ensemble des équipements d'un modèle disponibles aux dates indiquées.
+     *
+     * @return une liste non nulle d'équipements, éventuellement vide si aucune donnée n'est présente
+     */
+    public List<Equipment> getAllOfModelAvailableOnPeriod(int modelId, Date startDate, Date endDate) {
+
+        return equipmentDao.findAllOfModelAvailableOnPeriod(modelId, startDate, endDate);
     }
 
     /**
@@ -34,7 +45,7 @@ public class EquipmentService {
      * @return une réponse HTTP contenant l'équipement si il existe (200 OK),
      *         ou un statut 404 (NOT_FOUND) si aucun équipement ne correspond à cet identifiant
      */
-    public ResponseEntity<Equipment> getEquipment(int id) {
+    public ResponseEntity<Equipment> getById(int id) {
         Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
         if (optionalEquipment.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,7 +59,7 @@ public class EquipmentService {
      * @param newEquipment données de l'équipement à créer
      * @return une réponse HTTP contenant l'équipement créé (201 CREATED)
      */
-    public ResponseEntity<Equipment> createEquipment(Equipment newEquipment) {
+    public ResponseEntity<Equipment> create(Equipment newEquipment) {
         newEquipment.setId(null);
         equipmentDao.save(newEquipment);
         return new ResponseEntity<>(newEquipment, HttpStatus.CREATED);
@@ -61,7 +72,7 @@ public class EquipmentService {
      * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
      *         ou 404 (NOT_FOUND) si aucun équipement ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> deleteEquipment(int id) {
+    public ResponseEntity<Void> deleteById(int id) {
         Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
 
         if (optionalEquipment.isEmpty()) {
@@ -80,7 +91,7 @@ public class EquipmentService {
      * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
      *         ou 404 (NOT_FOUND) si aucun équipement ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> updateEquipment(int id, Equipment equipmentToUpdate) {
+    public ResponseEntity<Void> updateById(int id, Equipment equipmentToUpdate) {
         Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
 
         if (optionalEquipment.isEmpty()) {

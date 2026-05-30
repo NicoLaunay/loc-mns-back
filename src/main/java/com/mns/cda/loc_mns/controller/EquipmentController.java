@@ -7,11 +7,14 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.EquipmentService;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,13 +28,21 @@ public class EquipmentController {
     @GetMapping("/list")
     @JsonView(EquipmentView.class)
     public List<Equipment> getAll() {
-        return service.getAllEquipments();
+        return service.getAll();
+    }
+
+    @GetMapping("/list-available-{modelId}")
+    @JsonView(EquipmentView.class)
+    public List<Equipment> getAllOfModelAvailableOnPeriod(@PathVariable Integer modelId,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date start,
+                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date end) {
+        return service.getAllOfModelAvailableOnPeriod(modelId, start, end);
     }
 
     @GetMapping("/{id}")
     @JsonView(EquipmentView.class)
     public ResponseEntity<Equipment> get(@PathVariable int id) {
-        return service.getEquipment(id);
+        return service.getById(id);
     }
 
     @PostMapping("")
@@ -44,20 +55,20 @@ public class EquipmentController {
         //Si on stocke le Creator dans l'equipment :
 //        newEquipment.setCreator(userDetails.getUSer());
 
-        return service.createEquipment(newEquipment);
+        return service.create(newEquipment);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteEquipment(id);
+        return service.deleteById(id);
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Equipment equipmentToUpdate) {
-        return service.updateEquipment(id, equipmentToUpdate);
+        return service.updateById(id, equipmentToUpdate);
     }
 
 }
