@@ -43,6 +43,19 @@ public class ModelService {
     }
 
     /**
+     * Récupère l'ensemble des modèles d'un type donné enregistrés en base de données.
+     *
+     * @param typeId: identifiant du type recherché
+     * @return une liste non nulle de modèles sous forme de DTO, éventuellement vide si aucune donnée n'est présente
+     */
+    public List<ModelDto> getAllOfType(int typeId) {
+        return modelDao.findAllOfType(typeId)
+                .stream()
+                .map(mapper::toDto)
+                .toList();
+    }
+
+    /**
      * Récupère un modèle à partir de son identifiant.
      *
      * @param id identifiant unique du modèle recherché

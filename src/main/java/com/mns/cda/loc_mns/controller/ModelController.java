@@ -2,7 +2,6 @@ package com.mns.cda.loc_mns.controller;
 
 import com.mns.cda.loc_mns.dto.ModelDto;
 import com.mns.cda.loc_mns.model.Model;
-import com.mns.cda.loc_mns.model.Type;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,11 @@ public class ModelController {
     @GetMapping("/list")
     public List<ModelDto> getAll() {
         return service.getAllModels();
+    }
+
+    @GetMapping("/of-type-{typeId}")
+    public List<ModelDto> getAllOfType(@PathVariable int typeId) {
+        return service.getAllOfType(typeId);
     }
 
     @GetMapping("/{id}")
@@ -47,19 +51,4 @@ public class ModelController {
                                        @RequestBody Model modelToUpdate) {
         return service.updateModel(id, modelToUpdate);
     }
-//
-//    @GetMapping("/test")
-//    public ModelDto test() {
-//        return new ModelDto(
-//                1,
-//                "name",
-//                "description",
-//                false,
-//                new Type(),
-//                List.of(),
-//                List.of(),
-//                List.of()
-//                );
-//    }
-
 }
