@@ -1,7 +1,9 @@
 package com.mns.cda.loc_mns.dao;
 
 import com.mns.cda.loc_mns.model.Loan;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -62,5 +64,11 @@ public interface LoanDao extends JpaRepository<Loan, Integer> {
             "WHERE loan.equipment.id = :id " +
             "AND loan.startDate > current date ")
     List<Loan> findPlannedByEquipmentId(@Param("id") int id);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Loan loan " +
+            "WHERE loan.user.id = :userId ")
+    void deleteAllByUserId(@Param("userId") int userId);
 
 }
