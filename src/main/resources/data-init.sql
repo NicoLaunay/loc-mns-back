@@ -4,7 +4,8 @@ VALUES ('Salle 203'),
        ('Coworking 1');
 
 INSERT INTO role (name)
-VALUES ('ADMIN'),
+VALUES ('OWNER'),
+       ('ADMIN'),
        ('USER');
 
 INSERT INTO type (name)
@@ -42,7 +43,7 @@ VALUES (1, 2, 1);
 -- Mdp : blaBlabla6!
 INSERT INTO app_user (name, surname, email, password, accreditation_id, role_id)
 VALUES ('Nicolas', 'Launay', 'nicolas.launay@email.com', '$2a$10$5pY5tTl.mP/ybcGMeE9bbelROnRQxSx46l3yt6vx58H2NrNV9UZES', 1, 1),
-       ('Celia', 'Godfrin', 'celia.godfrin@email.com', '$2a$10$5pY5tTl.mP/ybcGMeE9bbelROnRQxSx46l3yt6vx58H2NrNV9UZES', 2, 2);
+       ('Celia', 'Godfrin', 'celia.godfrin@email.com', '$2a$10$5pY5tTl.mP/ybcGMeE9bbelROnRQxSx46l3yt6vx58H2NrNV9UZES', 2, 3);
 
 INSERT INTO equipment (name, condition, model_id, location_id)
 VALUES ('PC 1', 'éraflures sur capot', 1, 3);
