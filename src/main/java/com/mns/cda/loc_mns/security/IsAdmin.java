@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.METHOD, ElementType.TYPE})
 // indique quand l'annotation est effectuée
 @Retention(RetentionPolicy.RUNTIME)
-@PreAuthorize("hasRole('ROLE_ADMIN')")
+@PreAuthorize("hasRole('ROLE_ADMIN') || hasRole('ROLE_OWNER')")
 public @interface IsAdmin {
 }
