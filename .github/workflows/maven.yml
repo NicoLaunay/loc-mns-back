@@ -43,7 +43,14 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    # Construction de l'image docker (ici via docker hub)
+    # Récupération du tag stocké dans le pom.xml → stocké dans la variable VERSION
+    - name: Extract project version
+      run: echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+    # Tag de l'image
+    - name: Tag image with version from pom.xml
+      run: docker tag nicol49/test-devops-locnes-back nicol49/test-devops-locnes-back:${{ env.VERSION }}
+
+    # Construction de l'image docker (ici via docker hub) nom:tag
     - name: Build docker image
       run: docker build -t nicol49/test-devops-locnes-back .
 
@@ -54,6 +61,9 @@ jobs:
         username: nicol49
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    # On pousse l'image vers docker hub
+    # On pousse l'image vers docker hub (en tant que latest version)
     - name: Push docker image
       run: docker push nicol49/test-devops-locnes-back
+    # On pousse l'image versionnée vers docker hub (pour l'historique des versions)
+    - name: Push docker image with version
+      run: docker push nicol49/test-devops-locnes-back:${{ env.VERSION }}

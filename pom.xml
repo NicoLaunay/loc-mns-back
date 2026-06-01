@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.mns.cda</groupId>
-    <artifactId>loc_mns</artifactId>
+    <artifactId>locnes</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>loc_mns</name>
-    <description>loc_mns</description>
+    <name>LocNES</name>
+    <description>LocNES application</description>
     <url/>
     <licenses>
         <license/>
