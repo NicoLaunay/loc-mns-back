@@ -87,7 +87,15 @@
     </dependencies>
 
     <build>
+        <!-- Nom de l'application (nom du .jar) -->
+        <finalName>locnes</finalName>
         <plugins>
+            <!-- Permet de déterminer le nom de l'application avec finalName -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

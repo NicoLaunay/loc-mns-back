@@ -42,3 +42,18 @@ jobs:
     # Lancement de la commande Maven :
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    # Construction de l'image docker (ici via docker hub)
+    - name: Build docker image
+      run: docker build -t nicol49/test-devops-locnes-back .
+
+    # Connection à Docker hub
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v4
+      with:
+        username: nicol49
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # On pousse l'image vers docker hub
+    - name: Push docker image
+      run: docker push nicol49/test-devops-locnes-back

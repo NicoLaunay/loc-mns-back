@@ -1,4 +1,5 @@
 services:
+  #  commandes pour la BDD
   postgres:
     image: postgres:18
     environment:
@@ -10,6 +11,15 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+
+  #  commandes pour l'APP
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    # Liste des composants dont il faut attendre l'exécution avant de lancer app
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
