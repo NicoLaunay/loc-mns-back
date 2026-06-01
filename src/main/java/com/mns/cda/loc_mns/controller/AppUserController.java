@@ -3,8 +3,9 @@ package com.mns.cda.loc_mns.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.security.IsAdmin;
-import com.mns.cda.loc_mns.service.AppUserService;
+import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,15 +15,22 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @CrossOrigin
+@RequiredArgsConstructor
 public class AppUserController {
 
-    @Autowired
-    protected AppUserService service;
+//    @Autowired
+    protected final IAppUserService service;
 
     @GetMapping("/list")
     @JsonView(AppUserView.class)
     @IsAdmin
     public List<AppUser> getAll() {
+        return service.getAllAppUsers();
+    }
+
+    @GetMapping("/list-open")
+    @JsonView(AppUserView.class)
+    public List<AppUser> getAllOpen() {
         return service.getAllAppUsers();
     }
 
@@ -39,6 +47,7 @@ public class AppUserController {
     }
 
     @DeleteMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
         return service.deleteAppUser(id);
     }
