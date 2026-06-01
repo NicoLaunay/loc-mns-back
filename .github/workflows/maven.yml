@@ -41,7 +41,7 @@ jobs:
 
     # Ecrase le DB_HOST du .env dans application.properties
     - name: change localhost to db service name (postgres) in application.properties
-      run: sed -i 's/ ${DB_HOST} /postgres/' src/main/resources/application.properties
+      run: sed -i 's/${DB_HOST}/postgres/' src/main/resources/application.properties
 
     #    - name: Idem mais en modifiant le .env
     #      run: |
