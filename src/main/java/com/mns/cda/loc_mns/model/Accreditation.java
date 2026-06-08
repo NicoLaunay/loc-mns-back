@@ -27,7 +27,6 @@ public class Accreditation {
     @JsonView({LoanView.class, ModificationView.class})
     protected Integer id;
 
-//    @Length(min = 3, max = 10)
     @JsonView({LoanView.class, ModificationView.class})
     protected String name;
 
