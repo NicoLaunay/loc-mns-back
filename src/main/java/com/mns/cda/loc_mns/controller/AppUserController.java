@@ -28,12 +28,6 @@ public class AppUserController {
         return service.getAllAppUsers();
     }
 
-    @GetMapping("/list-open")
-    @JsonView(AppUserView.class)
-    public List<AppUser> getAllOpen() {
-        return service.getAllAppUsers();
-    }
-
     @GetMapping("/{id}")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> get(@PathVariable int id) {
