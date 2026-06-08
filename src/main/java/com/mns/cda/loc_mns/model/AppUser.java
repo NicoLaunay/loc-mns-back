@@ -42,14 +42,18 @@ public class AppUser {
 
     @NotBlank(message = "Le Mot de Passe ne peut pas être vide")
     @Size(min = 8, max = 20, message = "Le Mot de Passe doit faire entre 8 et 20 caractères")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$")
+    @Pattern(
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).*$",
+            message = "Le mot de passe doit contenir au moins 1 minuscule, 1 majuscule, 1 chiffre, et 1 caractère spécial")
     protected String password;
 
     @ManyToOne
+    @NotNull(message = "l'accréditation ne peut pas être vide")
     @JsonView({AppUserView.class, LoanView.class, RequestView.class, ModificationView.class})
     protected Accreditation accreditation;
 
     @ManyToOne
+    @NotNull(message = "le rôle ne peut pas être vide")
     @JsonView({AppUserView.class, LoanView.class, RequestView.class, ModificationView.class})
     protected Role role;
 
