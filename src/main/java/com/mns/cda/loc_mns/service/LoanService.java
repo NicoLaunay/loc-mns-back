@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,45 +96,52 @@ public class LoanService {
      * Récupère un emprunt à partir de son identifiant.
      *
      * @param id identifiant unique de l'emprunt recherché
-     * @return une réponse HTTP contenant l'emprunt si il existe (200 OK),
-     *         ou un statut 404 (NOT_FOUND) si aucun emprunt ne correspond à cet identifiant
+     * @return l'emprunt s'il existe,
+     *         ou une exception si aucun emprunt ne correspond à cet identifiant
+     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public ResponseEntity<Loan> getById(int id) {
+    public Loan getById(int id) throws IllegalArgumentException {
         Optional<Loan> optionalLoan = loanDao.findById(id);
         if (optionalLoan.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
+        } else {
+            return optionalLoan.get();
         }
-        return new ResponseEntity<>(optionalLoan.get(), HttpStatus.OK);
     }
 
     /**
      * Crée un nouvel emprunt en base de données.
      *
      * @param newLoan données de l'emprunt à créer
-     * @return une réponse HTTP contenant l'emprunt créé (201 CREATED)
+     * @return l'emprunt créé
+     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public ResponseEntity<Loan> create(Loan newLoan) {
-        newLoan.setId(null);
-        loanDao.save(newLoan);
-        return new ResponseEntity<>(newLoan, HttpStatus.CREATED);
+    public Loan create(Loan newLoan) throws IllegalArgumentException {
+        LocalDate startDate = newLoan.getStartDate();
+        LocalDate endDate = newLoan.getEndDate();
+
+        if (!startDate.isBefore(endDate)) {
+            throw new IllegalArgumentException("La date de fin doit êttre après la date de début");
+        }
+
+        return loanDao.save(newLoan);
+
     }
 
     /**
      * Supprime un emprunt à partir de son identifiant.
      *
      * @param id identifiant unique de l'emprunt à supprimer
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
-     *         ou 404 (NOT_FOUND) si aucun emprunt ne correspond à cet identifiant
+     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public ResponseEntity<Void> delete(int id) {
+    public void delete(int id) throws IllegalArgumentException {
         Optional<Loan> optionalLoan = loanDao.findById(id);
 
         if (optionalLoan.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
+        } else {
+            loanDao.deleteById(id);
         }
-
-        loanDao.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -141,20 +149,17 @@ public class LoanService {
      *
      * @param id identifiant unique de l'emprunt à mettre à jour
      * @param loanToUpdate nouvelles données de l'emprunt
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
-     *         ou 404 (NOT_FOUND) si aucun emprunt ne correspond à cet identifiant
+     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public ResponseEntity<Void> update(int id, Loan loanToUpdate) {
+    public void update(int id, Loan loanToUpdate) throws IllegalArgumentException {
         Optional<Loan> optionalLoan = loanDao.findById(id);
 
         if (optionalLoan.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
+        } else {
+            // On écrase l'id du JSON par celui en paramètre
+            loanToUpdate.setId(id);
+            loanDao.save(loanToUpdate);
         }
-
-        // On écrase l'id du JSON par celui en paramètre
-        loanToUpdate.setId(id);
-        loanDao.save(loanToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

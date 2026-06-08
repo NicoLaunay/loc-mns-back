@@ -4,10 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.Accreditation;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.AccreditationService;
-import com.mns.cda.loc_mns.view.AccreditationView;
 import com.mns.cda.loc_mns.view.Views;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,19 +28,28 @@ public class AccreditationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Accreditation> get(@PathVariable int id) {
-        return service.getAccreditation(id);
+        try {
+            return new ResponseEntity<>(service.getAccreditation(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @IsAdmin
     public ResponseEntity<Accreditation> create(@RequestBody Accreditation newAccreditation) {
-        return service.createAccreditation(newAccreditation);
+        return new ResponseEntity<>(service.createAccreditation(newAccreditation), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteAccreditation(id);
+        try {
+            service.deleteAccreditation(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
@@ -49,7 +57,11 @@ public class AccreditationController {
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Accreditation accreditationToUpdate) {
-        return service.updateAccreditation(id, accreditationToUpdate);
+        try {
+            service.updateAccreditation(id, accreditationToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

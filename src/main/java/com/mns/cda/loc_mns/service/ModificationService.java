@@ -4,8 +4,6 @@ import com.mns.cda.loc_mns.dao.ModificationDao;
 import com.mns.cda.loc_mns.model.Modification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,45 +29,40 @@ public class ModificationService {
      * Récupère une modification à partir de son identifiant.
      *
      * @param id identifiant unique de la modification recherchée
-     * @return une réponse HTTP contenant la modification si elle existe (200 OK),
-     *         ou un statut 404 (NOT_FOUND) si aucune modification ne correspond à cet identifiant
+     * @return la modification correspondante
+     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
      */
-    public ResponseEntity<Modification> getModification(int id) {
+    public Modification getModification(int id) {
         Optional<Modification> optionalModification = modificationDao.findById(id);
         if (optionalModification.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
         }
-        return new ResponseEntity<>(optionalModification.get(), HttpStatus.OK);
+        return optionalModification.get();
     }
 
     /**
      * Crée une nouvelle modification en base de données.
      *
      * @param newModification données de la modification à créer
-     * @return une réponse HTTP contenant la modification créée (201 CREATED)
+     * @return la modification créée
      */
-    public ResponseEntity<Modification> createModification(Modification newModification) {
+    public Modification createModification(Modification newModification) {
         newModification.setId(null);
-        modificationDao.save(newModification);
-        return new ResponseEntity<>(newModification, HttpStatus.CREATED);
+        return modificationDao.save(newModification);
     }
 
     /**
      * Supprime une modification à partir de son identifiant.
      *
      * @param id identifiant unique de la modification à supprimer
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune modification ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> deleteModification(int id) {
+    public void deleteModification(int id) {
         Optional<Modification> optionalModification = modificationDao.findById(id);
-
         if (optionalModification.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
         }
-
         modificationDao.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -77,20 +70,14 @@ public class ModificationService {
      *
      * @param id identifiant unique de la modification à mettre à jour
      * @param modificationToUpdate nouvelles données de la modification
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune modification ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> updateModification(int id, Modification modificationToUpdate) {
+    public void updateModification(int id, Modification modificationToUpdate) {
         Optional<Modification> optionalModification = modificationDao.findById(id);
-
         if (optionalModification.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
         }
-
-        // On écrase l'id du JSON par celui en paramètre
         modificationToUpdate.setId(id);
         modificationDao.save(modificationToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

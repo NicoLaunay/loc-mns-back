@@ -4,8 +4,6 @@ import com.mns.cda.loc_mns.dao.CompositionDao;
 import com.mns.cda.loc_mns.model.Composition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,48 +26,43 @@ public class CompositionService {
     }
 
     /**
-     * Récupère une composition à partir de son identifiant.
+     * Récupère une composition à partir de sa clé composée.
      *
      * @param key clé composée unique de la composition recherchée
-     * @return une réponse HTTP contenant la composition si elle existe (200 OK),
-     *         ou un statut 404 (NOT_FOUND) si aucune composition ne correspond à cet identifiant
+     * @return la composition correspondante
+     * @throws IllegalArgumentException si aucune composition ne correspond à cette clé
      */
-    public ResponseEntity<Composition> getComposition(Composition.Key key) {
+    public Composition getComposition(Composition.Key key) {
         Optional<Composition> optionalComposition = compositionDao.findById(key);
         if (optionalComposition.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune composition ne correspond à cet identifiant");
         }
-        return new ResponseEntity<>(optionalComposition.get(), HttpStatus.OK);
+        return optionalComposition.get();
     }
 
     /**
      * Crée une nouvelle composition en base de données.
      *
      * @param newComposition données de la composition à créer
-     * @return une réponse HTTP contenant la composition créée (201 CREATED)
+     * @return la composition créée
      */
-    public ResponseEntity<Composition> createComposition(Composition newComposition) {
+    public Composition createComposition(Composition newComposition) {
         newComposition.setId(null);
-        compositionDao.save(newComposition);
-        return new ResponseEntity<>(newComposition, HttpStatus.CREATED);
+        return compositionDao.save(newComposition);
     }
 
     /**
-     * Supprime une composition à partir de son identifiant.
+     * Supprime une composition à partir de sa clé composée.
      *
      * @param key clé composée unique de la composition à supprimer
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune composition ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune composition ne correspond à cette clé
      */
-    public ResponseEntity<Void> deleteComposition(Composition.Key key) {
+    public void deleteComposition(Composition.Key key) {
         Optional<Composition> optionalComposition = compositionDao.findById(key);
-
         if (optionalComposition.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune composition ne correspond à cet identifiant");
         }
-
         compositionDao.deleteById(key);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -77,20 +70,14 @@ public class CompositionService {
      *
      * @param key clé composée unique de la composition à mettre à jour
      * @param compositionToUpdate nouvelles données de la composition
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune composition ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune composition ne correspond à cette clé
      */
-    public ResponseEntity<Void> updateComposition(Composition.Key key, Composition compositionToUpdate) {
+    public void updateComposition(Composition.Key key, Composition compositionToUpdate) {
         Optional<Composition> optionalComposition = compositionDao.findById(key);
-
         if (optionalComposition.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune composition ne correspond à cet identifiant");
         }
-
-        // On écrase l'id du JSON par celui en paramètre
         compositionToUpdate.setId(key);
         compositionDao.save(compositionToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

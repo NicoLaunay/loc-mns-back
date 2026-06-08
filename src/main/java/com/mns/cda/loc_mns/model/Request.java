@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter // Crée les Getters
@@ -27,7 +28,7 @@ public class Request {
 
     @NotNull(message = "La Date ne peut pas être vide")
     @JsonView({LoanView.class, RequestView.class})
-    protected Date date;
+    protected LocalDate date;
 
     @NotBlank(message = "Le Contenu ne peut pas être vide")
     @JsonView({LoanView.class, RequestView.class})

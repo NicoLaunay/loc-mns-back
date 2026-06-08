@@ -6,10 +6,14 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.LoanService;
 import com.mns.cda.loc_mns.view.LoanView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/loan")
@@ -59,25 +63,43 @@ public class LoanController {
     @GetMapping("/{id}")
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> get(@PathVariable int id) {
-        return loanService.getById(id);
+        try {
+            return new ResponseEntity<>(loanService.getById(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> create(@RequestBody Loan newLoan) {
-        return loanService.create(newLoan);
+        try {
+            Loan savedLoan = loanService.create(newLoan);
+            return new ResponseEntity<>(savedLoan, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return loanService.delete(id);
+        try {
+            loanService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Loan loanToUpdate) {
-        return loanService.update(id, loanToUpdate);
+        try {
+            loanService.update(id, loanToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

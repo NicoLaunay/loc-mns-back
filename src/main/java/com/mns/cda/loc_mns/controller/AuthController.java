@@ -36,18 +36,14 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/sign-in")
-    @JsonView(AppUserView.class) // évite l'affichage du MdP
+    @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> signIn(@RequestBody @Valid AppUser newUser) {
-
-        newUser.setPassword((passwordEncoder.encode(newUser.getPassword())));
-        userService.createAppUser(newUser);
-
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        AppUser created = userService.createAppUser(newUser);
+        return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AppUser user) {
-
         try {
             AppUserDetails appUser = (AppUserDetails) authenticationProvider
                     .authenticate(new UsernamePasswordAuthenticationToken(
@@ -55,7 +51,6 @@ public class AuthController {
                             user.getPassword()))
                     .getPrincipal();
 
-            // Construction du JWT
             String jwt = Jwts.builder()
                     .setSubject(user.getEmail())
                     .addClaims(Map.of("role", appUser.getUser().getRole().getName()))
@@ -67,7 +62,5 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
-
     }
 }

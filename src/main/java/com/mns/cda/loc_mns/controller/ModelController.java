@@ -5,6 +5,7 @@ import com.mns.cda.loc_mns.model.Model;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModelService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,25 +31,39 @@ public class ModelController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ModelDto> get(@PathVariable int id) {
-        return service.getModel(id);
+        try {
+            return new ResponseEntity<>(service.getModel(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @IsAdmin
     public ResponseEntity<ModelDto> create(@RequestBody Model newModel) {
-        return service.createModel(newModel);
+        return new ResponseEntity<>(service.createModel(newModel), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteModel(id);
+        try {
+            service.deleteModel(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Model modelToUpdate) {
-        return service.updateModel(id, modelToUpdate);
+        try {
+            service.updateModel(id, modelToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

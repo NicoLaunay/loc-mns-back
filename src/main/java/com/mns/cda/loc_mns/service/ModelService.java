@@ -7,8 +7,6 @@ import com.mns.cda.loc_mns.model.Model;
 import com.mns.cda.loc_mns.repository.ModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,12 +28,6 @@ public class ModelService {
      * @return une liste non nulle de modèles sous forme de DTO, éventuellement vide si aucune donnée n'est présente
      */
     public List<ModelDto> getAllModels() {
-        System.out.println(
-            repository.findAll()
-                    .stream()
-                    .map(mapper::toDto)
-                    .toList()
-        );
         return repository.findAll()
                 .stream()
                 .map(mapper::toDto)
@@ -45,7 +37,7 @@ public class ModelService {
     /**
      * Récupère l'ensemble des modèles d'un type donné enregistrés en base de données.
      *
-     * @param typeId: identifiant du type recherché
+     * @param typeId identifiant du type recherché
      * @return une liste non nulle de modèles sous forme de DTO, éventuellement vide si aucune donnée n'est présente
      */
     public List<ModelDto> getAllOfType(int typeId) {
@@ -59,45 +51,41 @@ public class ModelService {
      * Récupère un modèle à partir de son identifiant.
      *
      * @param id identifiant unique du modèle recherché
-     * @return une réponse HTTP contenant le modèle sous forme de DTO si il existe (200 OK),
-     *         ou un statut 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     * @return le modèle correspondant sous forme de DTO
+     * @throws IllegalArgumentException si aucun modèle ne correspond à cet identifiant
      */
-    public ResponseEntity<ModelDto> getModel(int id) {
+    public ModelDto getModel(int id) {
         Optional<Model> optionalModel = modelDao.findById(id);
         if (optionalModel.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun modèle ne correspond à cet identifiant");
         }
-        return new ResponseEntity<>(mapper.toDto(optionalModel.get()), HttpStatus.OK);
+        return mapper.toDto(optionalModel.get());
     }
 
     /**
      * Crée un nouveau modèle en base de données.
      *
      * @param newModel données du modèle à créer
-     * @return une réponse HTTP contenant le modèle créé sous forme de DTO (201 CREATED)
+     * @return le modèle créé sous forme de DTO
      */
-    public ResponseEntity<ModelDto> createModel(Model newModel) {
+    public ModelDto createModel(Model newModel) {
         newModel.setId(null);
         modelDao.save(newModel);
-        return new ResponseEntity<>(mapper.toDto(newModel), HttpStatus.CREATED);
+        return mapper.toDto(newModel);
     }
 
     /**
      * Supprime un modèle à partir de son identifiant.
      *
      * @param id identifiant unique du modèle à supprimer
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
-     *         ou 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucun modèle ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> deleteModel(int id) {
+    public void deleteModel(int id) {
         Optional<Model> optionalModel = modelDao.findById(id);
-
         if (optionalModel.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun modèle ne correspond à cet identifiant");
         }
-
         modelDao.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -105,47 +93,14 @@ public class ModelService {
      *
      * @param id identifiant unique du modèle à mettre à jour
      * @param modelToUpdate nouvelles données du modèle
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
-     *         ou 404 (NOT_FOUND) si aucun modèle ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucun modèle ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> updateModel(int id, Model modelToUpdate) {
+    public void updateModel(int id, Model modelToUpdate) {
         Optional<Model> optionalModel = modelDao.findById(id);
-
         if (optionalModel.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucun modèle ne correspond à cet identifiant");
         }
-
-        // On écrase l'id du JSON par celui en paramètre
         modelToUpdate.setId(id);
         modelDao.save(modelToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-//
-//    private List<Model> cleanListRelations(List<Model> models) {
-//        if (models != null) {
-//            for(Model model : models) {
-//                cleanModelRelations(model);
-//            }
-//        }
-//        return models;
-//    }
-//
-//    private Model cleanModelRelations(Model model) {
-//        List<Model> components = model.getComponents();
-//        if (components != null) {
-//            for (Model component : model.getComponents()) {
-//                component.setComponents(null);
-//                component.setParents(null);
-//            }
-//        }
-//        List<Model> parents = model.getParents();
-//        if (parents != null) {
-//            for (Model parent : model.getParents()) {
-//                parent.setComponents(null);
-//                parent.setParents(null);
-//            }
-//        }
-//        return model;
-//    }
 }

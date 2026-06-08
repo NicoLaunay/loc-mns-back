@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter // Crée les Getters
@@ -29,16 +30,16 @@ public class Loan {
     @NotNull(message = "La Date de Début ne peut pas être vide")
     @DateTimeFormat
     @JsonView({LoanView.class, RequestView.class, AppUserView.class})
-    protected Date startDate;
+    protected LocalDate startDate;
 
     @NotNull(message = "La Date de Fin ne peut pas être vide")
     @DateTimeFormat
     @JsonView({LoanView.class, RequestView.class, AppUserView.class})
-    protected Date endDate;
+    protected LocalDate endDate;
 
     @DateTimeFormat
     @JsonView({LoanView.class, RequestView.class, AppUserView.class})
-    protected Date returnDate;
+    protected LocalDate returnDate;
 
     @NotNull(message = "L'Utilisateur ne peut pas être vide")
     @ManyToOne

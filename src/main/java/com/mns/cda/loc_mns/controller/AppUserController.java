@@ -6,7 +6,7 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppUserController {
 
-//    @Autowired
     protected final IAppUserService service;
 
     @GetMapping("/list")
@@ -31,25 +30,38 @@ public class AppUserController {
     @GetMapping("/{id}")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> get(@PathVariable int id) {
-        return service.getAppUser(id);
+        try {
+            return new ResponseEntity<>(service.getAppUser(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> create(@RequestBody AppUser newAppUser) {
-        return service.createAppUser(newAppUser);
+        return new ResponseEntity<>(service.createAppUser(newAppUser), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteAppUser(id);
+        try {
+            service.deleteAppUser(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody AppUser appUserToUpdate) {
-        return service.updateAppUser(id, appUserToUpdate);
+        try {
+            service.updateAppUser(id, appUserToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

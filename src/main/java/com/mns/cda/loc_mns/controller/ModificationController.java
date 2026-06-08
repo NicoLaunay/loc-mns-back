@@ -6,6 +6,7 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModificationService;
 import com.mns.cda.loc_mns.view.ModificationView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,27 +31,40 @@ public class ModificationController {
     @JsonView(ModificationView.class)
     @IsAdmin
     public ResponseEntity<Modification> get(@PathVariable int id) {
-        return service.getModification(id);
+        try {
+            return new ResponseEntity<>(service.getModification(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @JsonView(ModificationView.class)
     @IsAdmin
     public ResponseEntity<Modification> create(@RequestBody Modification newModification) {
-        return service.createModification(newModification);
+        return new ResponseEntity<>(service.createModification(newModification), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteModification(id);
+        try {
+            service.deleteModification(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Modification modificationToUpdate) {
-        return service.updateModification(id, modificationToUpdate);
+        try {
+            service.updateModification(id, modificationToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

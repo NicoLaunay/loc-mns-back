@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter // Crée les Getters
@@ -27,7 +28,7 @@ public class Modification {
     @NotNull(message = "La date ne peut pas être vide")
     @DateTimeFormat
     @JsonView(ModificationView.class)
-    protected Date date;
+    protected LocalDate date;
 
     @ManyToOne
     @NotNull(message = "L'auteur ne peut pas être vide")

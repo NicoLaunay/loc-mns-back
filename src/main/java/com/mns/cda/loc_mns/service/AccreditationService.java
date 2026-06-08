@@ -3,23 +3,18 @@ package com.mns.cda.loc_mns.service;
 import com.mns.cda.loc_mns.dao.AccreditationDao;
 import com.mns.cda.loc_mns.dao.TypeDao;
 import com.mns.cda.loc_mns.model.Accreditation;
-import com.mns.cda.loc_mns.model.Type;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor // Crée un constructeur avec tous les champs requis (final)
+@RequiredArgsConstructor
 public class AccreditationService {
 
     protected final AccreditationDao accreditationDao;
     private final TypeDao typeDao;
-
 
     /**
      * Récupère l'ensemble des accréditations enregistrées en base de données.
@@ -34,46 +29,40 @@ public class AccreditationService {
      * Récupère une accréditation à partir de son identifiant.
      *
      * @param id identifiant unique de l'accréditation recherchée
-     * @return une réponse HTTP contenant l'accréditation si elle existe (200 OK),
-     *         ou un statut 404 (NOT_FOUND) si aucune accréditation ne correspond à cet identifiant
+     * @return l'accréditation correspondante
+     * @throws IllegalArgumentException si aucune accréditation ne correspond à cet identifiant
      */
-    public ResponseEntity<Accreditation> getAccreditation(int id) {
+    public Accreditation getAccreditation(int id) {
         Optional<Accreditation> optionalAccreditation = accreditationDao.findById(id);
         if (optionalAccreditation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune accréditation ne correspond à cet identifiant");
         }
-        return new ResponseEntity<>(optionalAccreditation.get(), HttpStatus.OK);
+        return optionalAccreditation.get();
     }
 
     /**
      * Crée une nouvelle accréditation en base de données.
      *
      * @param newAccreditation données de l'accréditation à créer
-     * @return une réponse HTTP contenant l'accréditation créée (201 CREATED)
+     * @return l'accréditation créée
      */
-    public ResponseEntity<Accreditation> createAccreditation(Accreditation newAccreditation) {
+    public Accreditation createAccreditation(Accreditation newAccreditation) {
         newAccreditation.setId(null);
-
-        accreditationDao.save(newAccreditation);
-        return new ResponseEntity<>(newAccreditation, HttpStatus.CREATED);
+        return accreditationDao.save(newAccreditation);
     }
 
     /**
      * Supprime une accréditation à partir de son identifiant.
      *
      * @param id identifiant unique de l'accréditation à supprimer
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la suppression est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune accréditation ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune accréditation ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> deleteAccreditation(int id) {
+    public void deleteAccreditation(int id) {
         Optional<Accreditation> optionalAccreditation = accreditationDao.findById(id);
-
         if (optionalAccreditation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune accréditation ne correspond à cet identifiant");
         }
-
         accreditationDao.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -81,21 +70,14 @@ public class AccreditationService {
      *
      * @param id identifiant unique de l'accréditation à mettre à jour
      * @param accreditationToUpdate nouvelles données de l'accréditation
-     * @return une réponse HTTP avec le statut 204 (NO_CONTENT) si la mise à jour est effectuée,
-     *         ou 404 (NOT_FOUND) si aucune accréditation ne correspond à cet identifiant
+     * @throws IllegalArgumentException si aucune accréditation ne correspond à cet identifiant
      */
-    public ResponseEntity<Void> updateAccreditation(int id, Accreditation accreditationToUpdate) {
+    public void updateAccreditation(int id, Accreditation accreditationToUpdate) {
         Optional<Accreditation> optionalAccreditation = accreditationDao.findById(id);
-
         if (optionalAccreditation.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            throw new IllegalArgumentException("Aucune accréditation ne correspond à cet identifiant");
         }
-
-        // On écrase l'id du JSON par celui en paramètre
         accreditationToUpdate.setId(id);
-
         accreditationDao.save(accreditationToUpdate);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

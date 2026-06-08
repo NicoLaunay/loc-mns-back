@@ -6,6 +6,7 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.CompositionService;
 import com.mns.cda.loc_mns.view.CompositionView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,22 +29,31 @@ public class CompositionController {
     @GetMapping("/{parentId}/{componentId}")
     @JsonView(CompositionView.class)
     public ResponseEntity<Composition> get(@PathVariable int parentId, @PathVariable int componentId) {
-        Composition.Key key = new Composition.Key(parentId, componentId);
-        return service.getComposition(key);
+        try {
+            Composition.Key key = new Composition.Key(parentId, componentId);
+            return new ResponseEntity<>(service.getComposition(key), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @JsonView(CompositionView.class)
     @IsAdmin
     public ResponseEntity<Composition> create(@RequestBody Composition newComposition) {
-        return service.createComposition(newComposition);
+        return new ResponseEntity<>(service.createComposition(newComposition), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{parentId}/{componentId}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int parentId, @PathVariable int componentId) {
-        Composition.Key key = new Composition.Key(parentId, componentId);
-        return service.deleteComposition(key);
+        try {
+            Composition.Key key = new Composition.Key(parentId, componentId);
+            service.deleteComposition(key);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{parentId}/{componentId}")
@@ -51,8 +61,12 @@ public class CompositionController {
     public ResponseEntity<Void> update(@PathVariable int parentId,
                                        @PathVariable int componentId,
                                        @RequestBody Composition compositionToUpdate) {
-        Composition.Key key = new Composition.Key(parentId, componentId);
-        return service.updateComposition(key, compositionToUpdate);
+        try {
+            Composition.Key key = new Composition.Key(parentId, componentId);
+            service.updateComposition(key, compositionToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }

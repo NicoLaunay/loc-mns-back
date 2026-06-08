@@ -7,10 +7,9 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.EquipmentService;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,42 +32,52 @@ public class EquipmentController {
 
     @GetMapping("/list-available-{modelId}")
     @JsonView(EquipmentView.class)
-    public List<Equipment> getAllOfModelAvailableOnPeriod(@PathVariable Integer modelId,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date start,
-                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date end) {
+    public List<Equipment> getAllOfModelAvailableOnPeriod(
+            @PathVariable Integer modelId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date end) {
         return service.getAllOfModelAvailableOnPeriod(modelId, start, end);
     }
 
     @GetMapping("/{id}")
     @JsonView(EquipmentView.class)
     public ResponseEntity<Equipment> get(@PathVariable int id) {
-        return service.getById(id);
+        try {
+            return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("")
     @JsonView(EquipmentView.class)
-    @IsAdmin // annotation maison
+    @IsAdmin
     public ResponseEntity<Equipment> create(
             @AuthenticationPrincipal AppUserDetails userDetails,
             @RequestBody Equipment newEquipment) {
-
-        //Si on stocke le Creator dans l'equipment :
-//        newEquipment.setCreator(userDetails.getUSer());
-
-        return service.create(newEquipment);
+        return new ResponseEntity<>(service.create(newEquipment), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        return service.deleteById(id);
+        try {
+            service.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Equipment equipmentToUpdate) {
-        return service.updateById(id, equipmentToUpdate);
+        try {
+            service.updateById(id, equipmentToUpdate);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-
 }
