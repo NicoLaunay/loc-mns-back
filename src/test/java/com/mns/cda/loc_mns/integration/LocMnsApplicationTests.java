@@ -37,9 +37,9 @@ class LocMnsApplicationTests {
     }
 
     @Test
-    public void callAppUserListOpen_shouldReturnCode200() throws Exception {
+    public void callAppUserList_shouldReturnCode200() throws Exception {
 
-        mvc.perform(get("/user/list-open"))
+        mvc.perform(get("/user/list"))
                 .andExpect(status().isOk()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
 
     }
