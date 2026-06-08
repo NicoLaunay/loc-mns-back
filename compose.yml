@@ -11,15 +11,29 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+    networks:
+      - backend
 
   #  commandes pour l'APP
-  app:
+  back:
     build: .
     ports:
       - "8080:8080"
     # Liste des composants dont il faut attendre l'exécution avant de lancer app
     depends_on:
       - postgres
+    networks:
+      - backend
+
+  # commandes pour le front (ATTENTION, peut causer une petite faille de sécu: le back et front ne doivent pas communiquer)
+  front:
+    image: nicol49/demo-devops-loc_mns_front
+    ports:
+      - "80:80"
 
 volumes:
   postgres_data:
+
+# On définit un réseau back pour isoler le back/BDD du front
+networks:
+  backend:
