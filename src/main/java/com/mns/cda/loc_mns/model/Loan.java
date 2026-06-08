@@ -2,11 +2,9 @@ package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.view.AppUserView;
-import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.LoanView;
 import com.mns.cda.loc_mns.view.RequestView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +13,6 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter // Crée les Getters
 @Setter // Crée les Setters
