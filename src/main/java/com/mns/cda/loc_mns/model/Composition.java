@@ -5,6 +5,7 @@ import com.mns.cda.loc_mns.view.CompositionView;
 import com.mns.cda.loc_mns.view.EquipmentView;
 import com.mns.cda.loc_mns.view.ModificationView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,7 +35,7 @@ public class Composition {
         Integer componentId;
     }
 
-    @NotBlank(message = "La quantité de Composant ne peut pas être nulle")
+    @Min(value = 1, message = "La quantité ne peut être inférieure à 1")
     @JsonView({CompositionView.class, EquipmentView.class})
     protected int amount = 1;
 
