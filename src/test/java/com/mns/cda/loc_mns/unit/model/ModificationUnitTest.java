@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class ModificationUnitTest {
@@ -39,7 +40,7 @@ public class ModificationUnitTest {
     @Test
     public void modificationWithValidDate_shouldBeValid() {
         Modification modification = new Modification();
-        modification.setDate(new Date());
+        modification.setDate(LocalDate.now());
 
         boolean constraintExist = TestUtils.constraintViolationExist(
                 validator.validate(modification),

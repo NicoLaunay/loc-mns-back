@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class LoanUnitTest {
@@ -39,7 +40,7 @@ public class LoanUnitTest {
     @Test
     public void loanWithValidStartDate_shouldBeValid() {
         Loan loan = new Loan();
-        loan.setStartDate(new Date());
+        loan.setStartDate(LocalDate.now());
 
         boolean constraintExist = TestUtils.constraintViolationExist(
                 validator.validate(loan),
@@ -67,7 +68,7 @@ public class LoanUnitTest {
     @Test
     public void loanWithValidEndDate_shouldBeValid() {
         Loan loan = new Loan();
-        loan.setEndDate(new Date());
+        loan.setEndDate(LocalDate.now());
 
         boolean constraintExist = TestUtils.constraintViolationExist(
                 validator.validate(loan),

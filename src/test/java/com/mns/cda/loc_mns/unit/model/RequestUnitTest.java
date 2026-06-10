@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class RequestUnitTest {
@@ -38,7 +39,7 @@ public class RequestUnitTest {
     @Test
     public void requestWithValidDate_shouldBeValid() {
         Request request = new Request();
-        request.setDate(new Date());
+        request.setDate(LocalDate.now());
 
         boolean constraintExist = TestUtils.constraintViolationExist(
                 validator.validate(request),
