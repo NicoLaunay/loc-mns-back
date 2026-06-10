@@ -1,13 +1,17 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Loan;
+import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
+import com.mns.cda.loc_mns.service.AppUserService;
 import com.mns.cda.loc_mns.service.LoanService;
 import com.mns.cda.loc_mns.view.LoanView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -22,6 +26,8 @@ public class LoanController {
 
     @Autowired
     protected LoanService loanService;
+    @Autowired
+    protected AppUserService userService;
 
     @GetMapping("/list")
     @JsonView(LoanView.class)
@@ -72,7 +78,11 @@ public class LoanController {
 
     @PostMapping
     @JsonView(LoanView.class)
-    public ResponseEntity<Loan> create(@RequestBody Loan newLoan) {
+    public ResponseEntity<Loan> create(
+            @AuthenticationPrincipal AppUserDetails userDetails,
+            @RequestBody Loan newLoan) {
+        AppUser user = userService.getAppUserByEmail(userDetails.getUsername());
+        newLoan.setUser(user);
         try {
             Loan savedLoan = loanService.create(newLoan);
             return new ResponseEntity<>(savedLoan, HttpStatus.CREATED);
