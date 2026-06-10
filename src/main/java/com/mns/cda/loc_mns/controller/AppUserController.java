@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,9 +33,9 @@ public class AppUserController {
     @GetMapping("/me")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> getConnected(
-            @RequestParam @Email String email) {
+            @AuthenticationPrincipal AppUserDetails userDetails) {
         try {
-            return new ResponseEntity<>(service.getAppUserByEmail(email), HttpStatus.OK);
+            return new ResponseEntity<>(service.getAppUserByEmail(userDetails.getUsername()), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
