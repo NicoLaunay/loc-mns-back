@@ -16,7 +16,7 @@ services:
 
   #  commandes pour l'APP
   back:
-    build: .
+    build: nicol49/test-devops-locnes-back:latest
     ports:
       - "8080:8080"
     # Liste des composants dont il faut attendre l'exécution avant de lancer app
