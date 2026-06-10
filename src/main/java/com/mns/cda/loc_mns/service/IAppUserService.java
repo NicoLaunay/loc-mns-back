@@ -10,6 +10,8 @@ public interface IAppUserService {
 
     AppUser getAppUser(int id);
 
+    AppUser getAppUserByEmail(String email);
+
     AppUser createAppUser(AppUser newAppUser);
 
     void deleteAppUser(int id);

@@ -5,6 +5,7 @@ import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
+import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,17 @@ public class AppUserController {
     @IsAdmin
     public List<AppUser> getAll() {
         return service.getAllAppUsers();
+    }
+
+    @GetMapping("/me")
+    @JsonView(AppUserView.class)
+    public ResponseEntity<AppUser> getConnected(
+            @RequestParam @Email String email) {
+        try {
+            return new ResponseEntity<>(service.getAppUserByEmail(email), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")

@@ -55,6 +55,22 @@ public class AppUserService implements IAppUserService {
     }
 
     /**
+     * Récupère un utilisateur à partir de son identifiant.
+     *
+     * @param email email de l'utilisateur recherché
+     * @return l'utilisateur correspondant
+     * @throws IllegalArgumentException si aucun utilisateur ne correspond à cet identifiant
+     */
+    @Override
+    public AppUser getAppUserByEmail(String email) {
+        Optional<AppUser> optionalAppUser = appUserDao.findByEmail(email);
+        if (optionalAppUser.isEmpty()) {
+            throw new IllegalArgumentException("Aucun utilisateur ne correspond à cet identifiant");
+        }
+        return optionalAppUser.get();
+    }
+
+    /**
      * Crée un nouvel utilisateur en base de données.
      *
      * @param newAppUser données de l'utilisateur à créer
