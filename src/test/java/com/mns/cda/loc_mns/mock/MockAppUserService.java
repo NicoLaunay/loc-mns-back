@@ -17,28 +17,33 @@ public class MockAppUserService implements IAppUserService {
     }
 
     @Override
-    public ResponseEntity<AppUser> getAppUser(int id) {
+    public AppUser getAppUser(int id) {
         if(id == 1) {
             Role roleAdmin = new Role(1,"ADMIN");
-            AppUser fakeUser = new AppUser();
 
-            return new ResponseEntity(Optional.of(fakeUser), HttpStatus.OK);
+            return new AppUser();
         }
         return null;
     }
 
     @Override
-    public ResponseEntity<AppUser> createAppUser(AppUser newAppUser) {
+    public AppUser getAppUserByEmail(String email) {
+        if(email.equals("john@email.com")) {
+            Role roleAdmin = new Role(1,"ADMIN");
+
+            return new AppUser();
+        }
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> deleteAppUser(int id) {
+    public AppUser createAppUser(AppUser newAppUser) {
         return null;
     }
 
     @Override
-    public ResponseEntity<Void> updateAppUser(int id, AppUser appUserToUpdate) {
-        return null;
-    }
+    public void deleteAppUser(int id) {}
+
+    @Override
+    public void updateAppUser(int id, AppUser appUserToUpdate) {}
 }
