@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +35,7 @@ public class EquipmentService {
      * @param endDate   date de fin de la période
      * @return une liste non nulle d'équipements disponibles, éventuellement vide
      */
-    public List<Equipment> getAllOfModelAvailableOnPeriod(int modelId, Date startDate, Date endDate) {
+    public List<Equipment> getAllOfModelAvailableOnPeriod(int modelId, LocalDate startDate, LocalDate endDate) {
         return equipmentDao.findAllOfModelAvailableOnPeriod(modelId, startDate, endDate);
     }
 
