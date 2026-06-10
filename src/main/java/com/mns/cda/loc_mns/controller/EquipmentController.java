@@ -46,7 +46,7 @@ public class EquipmentController {
         try {
             return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
         }
     }
 
