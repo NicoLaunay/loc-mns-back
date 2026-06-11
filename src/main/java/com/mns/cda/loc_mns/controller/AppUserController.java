@@ -6,7 +6,6 @@ import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
-import jakarta.validation.constraints.Email;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,55 +26,38 @@ public class AppUserController {
     @JsonView(AppUserView.class)
     @IsAdmin
     public List<AppUser> getAll() {
-        return service.getAllAppUsers();
+        return service.getAll();
     }
 
     @GetMapping("/me")
     @JsonView(AppUserView.class)
-    public ResponseEntity<AppUser> getConnected(
-            @AuthenticationPrincipal AppUserDetails userDetails) {
-        try {
-            return new ResponseEntity<>(service.getAppUserByEmail(userDetails.getUsername()), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<AppUser> getConnected(@AuthenticationPrincipal AppUserDetails userDetails) {
+        return ResponseEntity.ok(service.getByEmail(userDetails.getUsername()));
     }
 
     @GetMapping("/{id}")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> get(@PathVariable int id) {
-        try {
-            return new ResponseEntity<>(service.getAppUser(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping("")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> create(@RequestBody AppUser newAppUser) {
-        return new ResponseEntity<>(service.createAppUser(newAppUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.create(newAppUser), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            service.deleteAppUser(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody AppUser appUserToUpdate) {
-        try {
-            service.updateAppUser(id, appUserToUpdate);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.update(id, appUserToUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

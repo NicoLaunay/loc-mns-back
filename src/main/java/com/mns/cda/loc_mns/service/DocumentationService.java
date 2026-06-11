@@ -1,13 +1,13 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.DocumentationDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.Documentation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class DocumentationService {
      *
      * @return une liste non nulle de documentations, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Documentation> getAllDocumentations() {
+    public List<Documentation> getAll() {
         return documentationDao.findAll();
     }
 
@@ -30,14 +30,11 @@ public class DocumentationService {
      *
      * @param id identifiant unique de la documentation recherchée
      * @return la documentation correspondante
-     * @throws IllegalArgumentException si aucune documentation ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune documentation ne correspond à cet identifiant
      */
-    public Documentation getDocumentation(int id) {
-        Optional<Documentation> optionalDocumentation = documentationDao.findById(id);
-        if (optionalDocumentation.isEmpty()) {
-            throw new IllegalArgumentException("Aucune documentation ne correspond à cet identifiant");
-        }
-        return optionalDocumentation.get();
+    public Documentation get(int id) throws IdNotFoundException {
+        return documentationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune documentation ne correspond à cet identifiant"));
     }
 
     /**
@@ -46,7 +43,7 @@ public class DocumentationService {
      * @param newDocumentation données de la documentation à créer
      * @return la documentation créée
      */
-    public Documentation createDocumentation(Documentation newDocumentation) {
+    public Documentation create(Documentation newDocumentation) {
         newDocumentation.setId(null);
         return documentationDao.save(newDocumentation);
     }
@@ -55,13 +52,11 @@ public class DocumentationService {
      * Supprime une documentation à partir de son identifiant.
      *
      * @param id identifiant unique de la documentation à supprimer
-     * @throws IllegalArgumentException si aucune documentation ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune documentation ne correspond à cet identifiant
      */
-    public void deleteDocumentation(int id) {
-        Optional<Documentation> optionalDocumentation = documentationDao.findById(id);
-        if (optionalDocumentation.isEmpty()) {
-            throw new IllegalArgumentException("Aucune documentation ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        documentationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune documentation ne correspond à cet identifiant"));
         documentationDao.deleteById(id);
     }
 
@@ -70,13 +65,11 @@ public class DocumentationService {
      *
      * @param id identifiant unique de la documentation à mettre à jour
      * @param documentationToUpdate nouvelles données de la documentation
-     * @throws IllegalArgumentException si aucune documentation ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune documentation ne correspond à cet identifiant
      */
-    public void updateDocumentation(int id, Documentation documentationToUpdate) {
-        Optional<Documentation> optionalDocumentation = documentationDao.findById(id);
-        if (optionalDocumentation.isEmpty()) {
-            throw new IllegalArgumentException("Aucune documentation ne correspond à cet identifiant");
-        }
+    public void update(int id, Documentation documentationToUpdate) throws IdNotFoundException {
+        documentationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune documentation ne correspond à cet identifiant"));
         documentationToUpdate.setId(id);
         documentationDao.save(documentationToUpdate);
     }

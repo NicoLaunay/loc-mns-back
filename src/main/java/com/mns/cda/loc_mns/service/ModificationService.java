@@ -1,13 +1,13 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.ModificationDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.Modification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class ModificationService {
      *
      * @return une liste non nulle de modifications, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Modification> getAllModifications() {
+    public List<Modification> getAll() {
         return modificationDao.findAll();
     }
 
@@ -30,14 +30,11 @@ public class ModificationService {
      *
      * @param id identifiant unique de la modification recherchée
      * @return la modification correspondante
-     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune modification ne correspond à cet identifiant
      */
-    public Modification getModification(int id) {
-        Optional<Modification> optionalModification = modificationDao.findById(id);
-        if (optionalModification.isEmpty()) {
-            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
-        }
-        return optionalModification.get();
+    public Modification get(int id) throws IdNotFoundException {
+        return modificationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune modification ne correspond à cet identifiant"));
     }
 
     /**
@@ -46,7 +43,7 @@ public class ModificationService {
      * @param newModification données de la modification à créer
      * @return la modification créée
      */
-    public Modification createModification(Modification newModification) {
+    public Modification create(Modification newModification) {
         newModification.setId(null);
         return modificationDao.save(newModification);
     }
@@ -55,13 +52,11 @@ public class ModificationService {
      * Supprime une modification à partir de son identifiant.
      *
      * @param id identifiant unique de la modification à supprimer
-     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune modification ne correspond à cet identifiant
      */
-    public void deleteModification(int id) {
-        Optional<Modification> optionalModification = modificationDao.findById(id);
-        if (optionalModification.isEmpty()) {
-            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        modificationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune modification ne correspond à cet identifiant"));
         modificationDao.deleteById(id);
     }
 
@@ -70,13 +65,11 @@ public class ModificationService {
      *
      * @param id identifiant unique de la modification à mettre à jour
      * @param modificationToUpdate nouvelles données de la modification
-     * @throws IllegalArgumentException si aucune modification ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune modification ne correspond à cet identifiant
      */
-    public void updateModification(int id, Modification modificationToUpdate) {
-        Optional<Modification> optionalModification = modificationDao.findById(id);
-        if (optionalModification.isEmpty()) {
-            throw new IllegalArgumentException("Aucune modification ne correspond à cet identifiant");
-        }
+    public void update(int id, Modification modificationToUpdate) throws IdNotFoundException {
+        modificationDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune modification ne correspond à cet identifiant"));
         modificationToUpdate.setId(id);
         modificationDao.save(modificationToUpdate);
     }

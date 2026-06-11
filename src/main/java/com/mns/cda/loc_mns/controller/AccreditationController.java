@@ -23,33 +23,25 @@ public class AccreditationController {
     @GetMapping("/list")
     @IsAdmin
     public List<Accreditation> getAll() {
-        return service.getAllAccreditations();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Accreditation> get(@PathVariable int id) {
-        try {
-            return new ResponseEntity<>(service.getAccreditation(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping("")
     @IsAdmin
     public ResponseEntity<Accreditation> create(@RequestBody Accreditation newAccreditation) {
-        return new ResponseEntity<>(service.createAccreditation(newAccreditation), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.create(newAccreditation), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            service.deleteAccreditation(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
@@ -57,11 +49,7 @@ public class AccreditationController {
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Accreditation accreditationToUpdate) {
-        try {
-            service.updateAccreditation(id, accreditationToUpdate);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.update(id, accreditationToUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

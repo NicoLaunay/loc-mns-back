@@ -43,11 +43,7 @@ public class EquipmentController {
     @GetMapping("/{id}")
     @JsonView(EquipmentView.class)
     public ResponseEntity<Equipment> get(@PathVariable int id) {
-        try {
-            return new ResponseEntity<>(service.getById(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping("")
@@ -56,29 +52,21 @@ public class EquipmentController {
     public ResponseEntity<Equipment> create(
             @AuthenticationPrincipal AppUserDetails userDetails,
             @RequestBody Equipment newEquipment) {
-        return new ResponseEntity<>(service.create(newEquipment), HttpStatus.CREATED);
+        return ResponseEntity.ok(service.create(newEquipment));
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            service.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Equipment equipmentToUpdate) {
-        try {
-            service.updateById(id, equipmentToUpdate);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.update(id, equipmentToUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

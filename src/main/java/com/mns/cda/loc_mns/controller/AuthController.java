@@ -38,7 +38,7 @@ public class AuthController {
     @PostMapping("/sign-in")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> signIn(@RequestBody @Valid AppUser newUser) {
-        AppUser created = userService.createAppUser(newUser);
+        AppUser created = userService.create(newUser);
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 

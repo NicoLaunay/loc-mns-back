@@ -1,13 +1,13 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.RequestDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.Request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class RequestService {
      *
      * @return une liste non nulle de demandes, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Request> getAllRequests() {
+    public List<Request> getAll() {
         return requestDao.findAll();
     }
 
@@ -30,14 +30,11 @@ public class RequestService {
      *
      * @param id identifiant unique de la demande recherchée
      * @return la demande correspondante
-     * @throws IllegalArgumentException si aucune demande ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune demande ne correspond à cet identifiant
      */
-    public Request getRequest(int id) {
-        Optional<Request> optionalRequest = requestDao.findById(id);
-        if (optionalRequest.isEmpty()) {
-            throw new IllegalArgumentException("Aucune demande ne correspond à cet identifiant");
-        }
-        return optionalRequest.get();
+    public Request get(int id) throws IdNotFoundException {
+        return requestDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune demande ne correspond à cet identifiant"));
     }
 
     /**
@@ -46,7 +43,7 @@ public class RequestService {
      * @param newRequest données de la demande à créer
      * @return la demande créée
      */
-    public Request createRequest(Request newRequest) {
+    public Request create(Request newRequest) {
         newRequest.setId(null);
         return requestDao.save(newRequest);
     }
@@ -55,13 +52,11 @@ public class RequestService {
      * Supprime une demande à partir de son identifiant.
      *
      * @param id identifiant unique de la demande à supprimer
-     * @throws IllegalArgumentException si aucune demande ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune demande ne correspond à cet identifiant
      */
-    public void deleteRequest(int id) {
-        Optional<Request> optionalRequest = requestDao.findById(id);
-        if (optionalRequest.isEmpty()) {
-            throw new IllegalArgumentException("Aucune demande ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        requestDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune demande ne correspond à cet identifiant"));
         requestDao.deleteById(id);
     }
 
@@ -70,13 +65,11 @@ public class RequestService {
      *
      * @param id identifiant unique de la demande à mettre à jour
      * @param requestToUpdate nouvelles données de la demande
-     * @throws IllegalArgumentException si aucune demande ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucune demande ne correspond à cet identifiant
      */
-    public void updateRequest(int id, Request requestToUpdate) {
-        Optional<Request> optionalRequest = requestDao.findById(id);
-        if (optionalRequest.isEmpty()) {
-            throw new IllegalArgumentException("Aucune demande ne correspond à cet identifiant");
-        }
+    public void update(int id, Request requestToUpdate) throws IdNotFoundException {
+        requestDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucune demande ne correspond à cet identifiant"));
         requestToUpdate.setId(id);
         requestDao.save(requestToUpdate);
     }

@@ -14,7 +14,6 @@ import java.util.function.Function;
 @Component
 public class ModelMapper {
     public ModelDto toDto(Model model) {
-        System.out.println("toDto" + model.getName());
         if (model == null) {
             return null;
         }
@@ -32,7 +31,6 @@ public class ModelMapper {
     }
 
     public ModelLightDto toLightDto(Model model) {
-        System.out.println("toLightDto");
         if (model == null) {
             return null;
         }

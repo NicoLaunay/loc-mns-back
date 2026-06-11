@@ -2,17 +2,15 @@ package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.AppUserDao;
 import com.mns.cda.loc_mns.dao.LoanDao;
-import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
+import com.mns.cda.loc_mns.exception.IncoherentDateException;
 import com.mns.cda.loc_mns.model.Loan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -98,15 +96,11 @@ public class LoanService {
      * @param id identifiant unique de l'emprunt recherché
      * @return l'emprunt s'il existe,
      *         ou une exception si aucun emprunt ne correspond à cet identifiant
-     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
+     * @throws IdNotFoundException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public Loan getById(int id) throws IllegalArgumentException {
-        Optional<Loan> optionalLoan = loanDao.findById(id);
-        if (optionalLoan.isEmpty()) {
-            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
-        } else {
-            return optionalLoan.get();
-        }
+    public Loan get(int id) throws IdNotFoundException {
+        return loanDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun prêt ne correspond à cet identifiant"));
     }
 
     /**
@@ -121,7 +115,7 @@ public class LoanService {
         LocalDate endDate = newLoan.getEndDate();
 
         if (!startDate.isBefore(endDate)) {
-            throw new IllegalArgumentException("La date de fin doit êttre après la date de début");
+            throw new IncoherentDateException("La date de fin doit être après la date de début");
         }
 
         return loanDao.save(newLoan);
@@ -132,16 +126,12 @@ public class LoanService {
      * Supprime un emprunt à partir de son identifiant.
      *
      * @param id identifiant unique de l'emprunt à supprimer
-     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
+     * @throws IdNotFoundException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public void delete(int id) throws IllegalArgumentException {
-        Optional<Loan> optionalLoan = loanDao.findById(id);
-
-        if (optionalLoan.isEmpty()) {
-            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
-        } else {
-            loanDao.deleteById(id);
-        }
+    public void delete(int id) throws IdNotFoundException {
+        loanDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun prêt ne correspond à cet identifiant"));
+        loanDao.deleteById(id);
     }
 
     /**
@@ -149,17 +139,12 @@ public class LoanService {
      *
      * @param id identifiant unique de l'emprunt à mettre à jour
      * @param loanToUpdate nouvelles données de l'emprunt
-     * @throws IllegalArgumentException exception signalant l'absence d'élément portant l'identifiant id
+     * @throws IdNotFoundException exception signalant l'absence d'élément portant l'identifiant id
      */
-    public void update(int id, Loan loanToUpdate) throws IllegalArgumentException {
-        Optional<Loan> optionalLoan = loanDao.findById(id);
-
-        if (optionalLoan.isEmpty()) {
-            throw new IllegalArgumentException("Aucun prêt ne correspond à cet identifiant");
-        } else {
-            // On écrase l'id du JSON par celui en paramètre
-            loanToUpdate.setId(id);
-            loanDao.save(loanToUpdate);
-        }
+    public void update(int id, Loan loanToUpdate) throws IdNotFoundException {
+        loanDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun prêt ne correspond à cet identifiant"));
+        loanToUpdate.setId(id);
+        loanDao.save(loanToUpdate);
     }
 }

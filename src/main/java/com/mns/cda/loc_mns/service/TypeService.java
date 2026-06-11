@@ -1,13 +1,13 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.TypeDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class TypeService {
      *
      * @return une liste non nulle de types, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Type> getAllTypes() {
+    public List<Type> getAll() {
         return typeDao.findAll();
     }
 
@@ -30,14 +30,11 @@ public class TypeService {
      *
      * @param id identifiant unique du type recherché
      * @return le type correspondant
-     * @throws IllegalArgumentException si aucun type ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun type ne correspond à cet identifiant
      */
-    public Type getType(int id) {
-        Optional<Type> optionalType = typeDao.findById(id);
-        if (optionalType.isEmpty()) {
-            throw new IllegalArgumentException("Aucun type ne correspond à cet identifiant");
-        }
-        return optionalType.get();
+    public Type get(int id) throws IdNotFoundException {
+        return typeDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun type ne correspond à cet identifiant"));
     }
 
     /**
@@ -46,7 +43,7 @@ public class TypeService {
      * @param newType données du type à créer
      * @return le type créé
      */
-    public Type createType(Type newType) {
+    public Type create(Type newType) {
         newType.setId(null);
         return typeDao.save(newType);
     }
@@ -55,13 +52,11 @@ public class TypeService {
      * Supprime un type à partir de son identifiant.
      *
      * @param id identifiant unique du type à supprimer
-     * @throws IllegalArgumentException si aucun type ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun type ne correspond à cet identifiant
      */
-    public void deleteType(int id) {
-        Optional<Type> optionalType = typeDao.findById(id);
-        if (optionalType.isEmpty()) {
-            throw new IllegalArgumentException("Aucun type ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        typeDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun type ne correspond à cet identifiant"));
         typeDao.deleteById(id);
     }
 
@@ -70,13 +65,11 @@ public class TypeService {
      *
      * @param id identifiant unique du type à mettre à jour
      * @param typeToUpdate nouvelles données du type
-     * @throws IllegalArgumentException si aucun type ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun type ne correspond à cet identifiant
      */
-    public void updateType(int id, Type typeToUpdate) {
-        Optional<Type> optionalType = typeDao.findById(id);
-        if (optionalType.isEmpty()) {
-            throw new IllegalArgumentException("Aucun type ne correspond à cet identifiant");
-        }
+    public void update(int id, Type typeToUpdate) throws IdNotFoundException {
+        typeDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun type ne correspond à cet identifiant"));
         typeToUpdate.setId(id);
         typeDao.save(typeToUpdate);
     }

@@ -8,26 +8,23 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.AppUserService;
 import com.mns.cda.loc_mns.service.LoanService;
 import com.mns.cda.loc_mns.view.LoanView;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/loan")
 @CrossOrigin
+@RequiredArgsConstructor
 public class LoanController {
 
-    @Autowired
-    protected LoanService loanService;
-    @Autowired
-    protected AppUserService userService;
+    protected final LoanService loanService;
+    protected final AppUserService userService;
 
     @GetMapping("/list")
     @JsonView(LoanView.class)
@@ -69,47 +66,34 @@ public class LoanController {
     @GetMapping("/{id}")
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> get(@PathVariable int id) {
-        try {
-            return new ResponseEntity<>(loanService.getById(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(loanService.get(id));
     }
 
     @PostMapping
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> create(
             @AuthenticationPrincipal AppUserDetails userDetails,
-            @RequestBody Loan newLoan) {
-        AppUser user = userService.getAppUserByEmail(userDetails.getUsername());
-        newLoan.setUser(user);
-        try {
-            Loan savedLoan = loanService.create(newLoan);
-            return new ResponseEntity<>(savedLoan, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            @RequestBody Loan newLoan) throws IllegalArgumentException {
+        if (newLoan.getStartDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La date de début ne peut pas être passée");
         }
+
+        AppUser user = userService.getByEmail(userDetails.getUsername());
+        newLoan.setUser(user);
+        return new ResponseEntity<>(loanService.create(newLoan), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            loanService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        loanService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Loan loanToUpdate) {
-        try {
-            loanService.update(id, loanToUpdate);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        loanService.update(id, loanToUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

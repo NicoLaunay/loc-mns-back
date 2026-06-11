@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface IAppUserService {
 
-    List<AppUser> getAllAppUsers();
+    List<AppUser> getAll();
 
-    AppUser getAppUser(int id);
+    AppUser get(int id);
 
-    AppUser getAppUserByEmail(String email);
+    AppUser getByEmail(String email);
 
-    AppUser createAppUser(AppUser newAppUser);
+    AppUser create(AppUser newAppUser);
 
-    void deleteAppUser(int id);
+    void delete(int id);
 
-    void updateAppUser(int id, AppUser appUserToUpdate);
+    void update(int id, AppUser appUserToUpdate);
 }

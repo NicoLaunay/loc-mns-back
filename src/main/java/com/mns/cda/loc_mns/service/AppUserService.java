@@ -4,6 +4,7 @@ import com.mns.cda.loc_mns.dao.AppUserDao;
 import com.mns.cda.loc_mns.dao.LoanDao;
 import com.mns.cda.loc_mns.dao.ModificationDao;
 import com.mns.cda.loc_mns.dao.RequestDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +34,7 @@ public class AppUserService implements IAppUserService {
      * @return une liste non nulle d'utilisateurs, éventuellement vide si aucune donnée n'est présente
      */
     @Override
-    public List<AppUser> getAllAppUsers() {
+    public List<AppUser> getAll() {
         return appUserDao.findAll();
     }
 
@@ -43,31 +43,25 @@ public class AppUserService implements IAppUserService {
      *
      * @param id identifiant unique de l'utilisateur recherché
      * @return l'utilisateur correspondant
-     * @throws IllegalArgumentException si aucun utilisateur ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
      */
     @Override
-    public AppUser getAppUser(int id) {
-        Optional<AppUser> optionalAppUser = appUserDao.findById(id);
-        if (optionalAppUser.isEmpty()) {
-            throw new IllegalArgumentException("Aucun utilisateur ne correspond à cet identifiant");
-        }
-        return optionalAppUser.get();
+    public AppUser get(int id) throws IdNotFoundException {
+        return appUserDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
     }
 
     /**
-     * Récupère un utilisateur à partir de son identifiant.
+     * Récupère un utilisateur à partir de son adresse email.
      *
-     * @param email email de l'utilisateur recherché
+     * @param email adresse email de l'utilisateur recherché
      * @return l'utilisateur correspondant
-     * @throws IllegalArgumentException si aucun utilisateur ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cette adresse email
      */
     @Override
-    public AppUser getAppUserByEmail(String email) {
-        Optional<AppUser> optionalAppUser = appUserDao.findByEmail(email);
-        if (optionalAppUser.isEmpty()) {
-            throw new IllegalArgumentException("Aucun utilisateur ne correspond à cet identifiant");
-        }
-        return optionalAppUser.get();
+    public AppUser getByEmail(String email) throws IdNotFoundException {
+        return appUserDao.findByEmail(email)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cette adresse email"));
     }
 
     /**
@@ -77,7 +71,7 @@ public class AppUserService implements IAppUserService {
      * @return l'utilisateur créé
      */
     @Override
-    public AppUser createAppUser(AppUser newAppUser) {
+    public AppUser create(AppUser newAppUser) {
         newAppUser.setId(null);
         newAppUser.setPassword(encoder.encode(newAppUser.getPassword()));
         return appUserDao.save(newAppUser);
@@ -87,14 +81,12 @@ public class AppUserService implements IAppUserService {
      * Supprime un utilisateur à partir de son identifiant.
      *
      * @param id identifiant unique de l'utilisateur à supprimer
-     * @throws IllegalArgumentException si aucun utilisateur ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
      */
     @Override
-    public void deleteAppUser(int id) {
-        Optional<AppUser> optionalAppUser = appUserDao.findById(id);
-        if (optionalAppUser.isEmpty()) {
-            throw new IllegalArgumentException("Aucun utilisateur ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        appUserDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         modificationDao.deleteAllByUserId(id);
         requestDao.deleteAllByUserId(id);
         loanDao.deleteAllByUserId(id);
@@ -106,14 +98,12 @@ public class AppUserService implements IAppUserService {
      *
      * @param id identifiant unique de l'utilisateur à mettre à jour
      * @param appUserToUpdate nouvelles données de l'utilisateur
-     * @throws IllegalArgumentException si aucun utilisateur ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
      */
     @Override
-    public void updateAppUser(int id, AppUser appUserToUpdate) {
-        Optional<AppUser> optionalAppUser = appUserDao.findById(id);
-        if (optionalAppUser.isEmpty()) {
-            throw new IllegalArgumentException("Aucun utilisateur ne correspond à cet identifiant");
-        }
+    public void update(int id, AppUser appUserToUpdate) throws IdNotFoundException {
+        appUserDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         appUserToUpdate.setId(id);
         appUserDao.save(appUserToUpdate);
     }

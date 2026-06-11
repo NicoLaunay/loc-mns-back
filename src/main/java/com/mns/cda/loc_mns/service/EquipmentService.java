@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.EquipmentDao;
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.Equipment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +45,11 @@ public class EquipmentService {
      *
      * @param id identifiant unique de l'équipement recherché
      * @return l'équipement correspondant
-     * @throws IllegalArgumentException si aucun équipement ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun équipement ne correspond à cet identifiant
      */
-    public Equipment getById(int id) {
-        Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
-        if (optionalEquipment.isEmpty()) {
-            throw new IllegalArgumentException("Aucun équipement ne correspond à cet identifiant");
-        }
-        return optionalEquipment.get();
+    public Equipment get(int id) throws IdNotFoundException{
+        return equipmentDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun équipement ne correspond à cet identifiant"));
     }
 
     /**
@@ -69,13 +67,11 @@ public class EquipmentService {
      * Supprime un équipement à partir de son identifiant.
      *
      * @param id identifiant unique de l'équipement à supprimer
-     * @throws IllegalArgumentException si aucun équipement ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun équipement ne correspond à cet identifiant
      */
-    public void deleteById(int id) {
-        Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
-        if (optionalEquipment.isEmpty()) {
-            throw new IllegalArgumentException("Aucun équipement ne correspond à cet identifiant");
-        }
+    public void delete(int id) throws IdNotFoundException {
+        equipmentDao.findById(id)
+            .orElseThrow(() -> new IdNotFoundException("Aucun équipement ne correspond à cet identifiant"));
         equipmentDao.deleteById(id);
     }
 
@@ -84,13 +80,11 @@ public class EquipmentService {
      *
      * @param id              identifiant unique de l'équipement à mettre à jour
      * @param equipmentToUpdate nouvelles données de l'équipement
-     * @throws IllegalArgumentException si aucun équipement ne correspond à cet identifiant
+     * @throws IdNotFoundException si aucun équipement ne correspond à cet identifiant
      */
-    public void updateById(int id, Equipment equipmentToUpdate) {
-        Optional<Equipment> optionalEquipment = equipmentDao.findById(id);
-        if (optionalEquipment.isEmpty()) {
-            throw new IllegalArgumentException("Aucun équipement ne correspond à cet identifiant");
-        }
+    public void update(int id, Equipment equipmentToUpdate) throws IdNotFoundException{
+        equipmentDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun équipement ne correspond à cet identifiant"));
         equipmentToUpdate.setId(id);
         equipmentDao.save(equipmentToUpdate);
     }

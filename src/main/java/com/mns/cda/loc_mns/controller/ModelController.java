@@ -4,7 +4,7 @@ import com.mns.cda.loc_mns.dto.ModelDto;
 import com.mns.cda.loc_mns.model.Model;
 import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.ModelService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,14 +14,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/model")
 @CrossOrigin
+@RequiredArgsConstructor
 public class ModelController {
 
-    @Autowired
-    protected ModelService service;
+    protected final ModelService service;
 
     @GetMapping("/list")
     public List<ModelDto> getAll() {
-        return service.getAllModels();
+        return service.getAll();
     }
 
     @GetMapping("/of-type-{typeId}")
@@ -31,39 +31,27 @@ public class ModelController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ModelDto> get(@PathVariable int id) {
-        try {
-            return new ResponseEntity<>(service.getModel(id), HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return ResponseEntity.ok(service.get(id));
     }
 
     @PostMapping("")
     @IsAdmin
     public ResponseEntity<ModelDto> create(@RequestBody Model newModel) {
-        return new ResponseEntity<>(service.createModel(newModel), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.create(newModel), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> delete(@PathVariable int id) {
-        try {
-            service.deleteModel(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")
     @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Model modelToUpdate) {
-        try {
-            service.updateModel(id, modelToUpdate);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        service.update(id, modelToUpdate);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

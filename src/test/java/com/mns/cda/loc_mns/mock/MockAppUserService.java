@@ -12,12 +12,12 @@ import java.util.Optional;
 public class MockAppUserService implements IAppUserService {
 
     @Override
-    public List<AppUser> getAllAppUsers() {
+    public List<AppUser> getAll() {
         return List.of();
     }
 
     @Override
-    public AppUser getAppUser(int id) {
+    public AppUser get(int id) {
         if(id == 1) {
             Role roleAdmin = new Role(1,"ADMIN");
 
@@ -27,7 +27,7 @@ public class MockAppUserService implements IAppUserService {
     }
 
     @Override
-    public AppUser getAppUserByEmail(String email) {
+    public AppUser getByEmail(String email) {
         if(email.equals("john@email.com")) {
             Role roleAdmin = new Role(1,"ADMIN");
 
@@ -37,13 +37,13 @@ public class MockAppUserService implements IAppUserService {
     }
 
     @Override
-    public AppUser createAppUser(AppUser newAppUser) {
+    public AppUser create(AppUser newAppUser) {
         return null;
     }
 
     @Override
-    public void deleteAppUser(int id) {}
+    public void delete(int id) {}
 
     @Override
-    public void updateAppUser(int id, AppUser appUserToUpdate) {}
+    public void update(int id, AppUser appUserToUpdate) {}
 }
