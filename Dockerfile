@@ -1,15 +1,12 @@
-# Distribution linux et version du JRE
-FROM eclipse-temurin:17-jre-alpine
-# Dossier racine du conteneur
-WORKDIR locnes
-# Copie du .jar
-COPY target/locnes.jar locnes.jar
-# Copie du .env
-COPY .env .env
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /workspace
+COPY pom.xml .
+RUN mvn dependency:go-offline
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# GESTION DES PORTS
-# Port ouvrable :
+FROM eclipse-temurin:17-jre
+WORKDIR /locnes
+COPY --from=build /workspace/target/*.jar locnes.jar
 EXPOSE 8080
-
-# [commande à exécuter, paramètres, fichier à exécuter]
 ENTRYPOINT ["java", "-jar", "locnes.jar"]
