@@ -27,7 +27,8 @@ INSERT INTO accreditation_type (accreditation_id, type_id)
 VALUES ('1', '1'),
        ('1', '2'),
        ('1', '3'),
-       ('2', '1');
+       ('2', '1'),
+       ('2', '2');
 
 INSERT INTO documentation (title, url)
 VALUES ('Livret PC', 'www.tuto.com'),

@@ -1,11 +1,17 @@
 package com.mns.cda.loc_mns.controller;
 
+import com.mns.cda.loc_mns.model.Accreditation;
+import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Type;
+import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
+import com.mns.cda.loc_mns.service.AccreditationService;
+import com.mns.cda.loc_mns.service.AppUserService;
 import com.mns.cda.loc_mns.service.TypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +23,25 @@ import java.util.List;
 public class TypeController {
 
     protected final TypeService service;
+    protected final AppUserService userService;
+    protected final AccreditationService accreditationService;
 
     @GetMapping("/list")
     public List<Type> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/borrowable")
+    public List<Type> getAllBorrowableByConnectedUser(@AuthenticationPrincipal AppUserDetails userDetails) {
+        AppUser user = userService.getByEmail(userDetails.getUsername());
+        System.out.println(user.getAccreditation());
+        return service.getAllBorrowableByAccreditation(user.getAccreditation());
+    }
+
+    @GetMapping("/borrowable-by/{id}")
+    public List<Type> getAllBorrowableByAccreditationId(@PathVariable int id) {
+        Accreditation accreditation = accreditationService.get(id);
+        return service.getAllBorrowableByAccreditation(accreditation);
     }
 
     @GetMapping("/{id}")

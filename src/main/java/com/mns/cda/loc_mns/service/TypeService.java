@@ -2,6 +2,7 @@ package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.TypeDao;
 import com.mns.cda.loc_mns.exception.IdNotFoundException;
+import com.mns.cda.loc_mns.model.Accreditation;
 import com.mns.cda.loc_mns.model.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,15 @@ public class TypeService {
      */
     public List<Type> getAll() {
         return typeDao.findAll();
+    }
+
+    /**
+     * Récupère l'ensemble des types enregistrés en base de données.
+     *
+     * @return une liste non nulle de types, éventuellement vide si aucune donnée n'est présente
+     */
+    public List<Type> getAllBorrowableByAccreditation(Accreditation accreditation) {
+        return accreditation.getBorrowedTypes();
     }
 
     /**
