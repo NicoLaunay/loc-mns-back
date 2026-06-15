@@ -4,6 +4,8 @@ services:
     container_name: locnes-back
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
       SERVER_PORT: ${SERVER_PORT}
