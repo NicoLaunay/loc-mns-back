@@ -69,8 +69,8 @@ jobs:
 
       - name: Build image
         run: |
-          docker build --no-cache -t ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:${{ github.sha }} .
-          docker build --no-cache -t ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:latest .
 
       - name: Push image
         run: |
