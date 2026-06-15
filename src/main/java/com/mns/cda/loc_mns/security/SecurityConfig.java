@@ -45,7 +45,11 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // on utilise pas de cookies (connexion stateless)
                 .cors(config -> config.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers(
+                                "/actuator/health",
+                                "/login",
+                                "/sign-in"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
