@@ -1,4 +1,13 @@
 services:
+  front:
+    image: nicol49/locnes-front:latest
+    container_name: locnes-front
+    ports:
+      - "80:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
   api:
     image: nicol49/locnes-back:latest
     container_name: locnes-back
