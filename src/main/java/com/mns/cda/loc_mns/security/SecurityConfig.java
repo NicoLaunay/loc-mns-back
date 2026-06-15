@@ -44,6 +44,10 @@ public class SecurityConfig {
         return http.csrf(config -> config.disable()) // pas de csrf
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // on utilise pas de cookies (connexion stateless)
                 .cors(config -> config.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/health").permitAll()
+                        .anyRequest().authenticated()
+                )
                 .addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
