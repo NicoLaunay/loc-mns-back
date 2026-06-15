@@ -23,6 +23,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
@@ -44,6 +48,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AppUser user) {
+        log.info("Login appelé");
+        log.info("Email reçu : {}", user.getEmail());
         try {
             AppUserDetails appUser = (AppUserDetails) authenticationProvider
                     .authenticate(new UsernamePasswordAuthenticationToken(
