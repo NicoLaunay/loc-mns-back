@@ -39,6 +39,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception e) {
 
+        // On ignore les exceptions liées à Actuator
+        if (e.getMessage() != null && e.getMessage().contains("actuator")) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("exception : " + e.getMessage());
 
         return ResponseEntity
