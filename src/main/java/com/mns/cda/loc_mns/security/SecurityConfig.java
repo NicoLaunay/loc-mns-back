@@ -44,6 +44,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+
+        System.out.println("SECURITY CONFIG CHARGEE");
+
         return http.csrf(config -> config.disable()) // pas de csrf
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // on utilise pas de cookies (connexion stateless)
                 .cors(config -> config.configurationSource(corsConfigurationSource()))
