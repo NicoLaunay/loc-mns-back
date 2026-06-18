@@ -1,6 +1,7 @@
 package com.mns.cda.loc_mns.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -28,6 +29,8 @@ public class SecurityConfig {
     protected final PasswordEncoder passwordEncoder;
     protected final UserDetailsService userDetailsService;
     protected final JwtFilter filter;
+    @Value("${cors.allowed-origins}")
+    private String allowedOrigins;
 
     // @Bean : on remplace le comportement par défaut par notre propre authenticationProvider
     @Bean
@@ -59,8 +62,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         // création d'une nouvelle config
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        // qui a accès à l'app: * -> tout le monde
-        corsConfiguration.setAllowedOrigins(List.of("*"));
+        // qui a accès à l'app
+        corsConfiguration.setAllowedOrigins(List.of(allowedOrigins.split(",")));
         // méthodes autorisées -> "GET", "POST", "DELETE", "PUT", "PATCH"
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "DELETE", "PUT", "PATCH"));
         // en-têtes autorisés -> tous

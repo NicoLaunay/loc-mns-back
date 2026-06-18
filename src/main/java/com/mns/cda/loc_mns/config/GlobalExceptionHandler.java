@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Id Not Found
+    // Identifiant introuvable
     @ExceptionHandler(IdNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleIdNotFound(IdNotFoundException e) {
         return ResponseEntity

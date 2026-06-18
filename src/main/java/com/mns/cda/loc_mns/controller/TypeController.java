@@ -34,7 +34,6 @@ public class TypeController {
     @GetMapping("/borrowable")
     public List<Type> getAllBorrowableByConnectedUser(@AuthenticationPrincipal AppUserDetails userDetails) {
         AppUser user = userService.getByEmail(userDetails.getUsername());
-        System.out.println(user.getAccreditation());
         return service.getAllBorrowableByAccreditation(user.getAccreditation());
     }
 
