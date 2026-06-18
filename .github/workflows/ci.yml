@@ -102,12 +102,11 @@ jobs:
           privateKey: ${{ secrets.SERVER_SSH_KEY }}
           command: |
             echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:${{ github.sha }}
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/locnes-back:latest
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/locnes-front:latest
             docker stop locnes-back || true
             docker stop locnes-front || true
             docker rm locnes-back || true
             docker rm locnes-front || true
             cd /opt/locnes
-            docker compose pull
             docker compose up -d --pull always
