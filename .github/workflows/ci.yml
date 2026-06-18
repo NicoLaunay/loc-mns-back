@@ -50,7 +50,7 @@ jobs:
       - name: Upload JAR artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myrecipe-api-jar
+          name: locnes-back-jar
           path: target/*.jar
 
   docker-push:
@@ -109,4 +109,5 @@ jobs:
             docker rm locnes-back || true
             docker rm locnes-front || true
             cd /opt/locnes
-            docker compose up -d
+            docker compose pull
+            docker compose up -d --pull always
