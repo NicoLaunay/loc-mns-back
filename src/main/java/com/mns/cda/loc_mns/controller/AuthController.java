@@ -50,24 +50,23 @@ public class AuthController {
     public ResponseEntity<String> login(@RequestBody AppUser user) {
         log.info("Login appelé");
         log.info("Email reçu : {}", user.getEmail());
-        return ResponseEntity.ok("TEST DEPLOI");
-//        try {
-//            AppUserDetails appUser = (AppUserDetails) authenticationProvider
-//                    .authenticate(new UsernamePasswordAuthenticationToken(
-//                            user.getEmail(),
-//                            user.getPassword()))
-//                    .getPrincipal();
-//
-//            String jwt = Jwts.builder()
-//                    .setSubject(user.getEmail())
-//                    .addClaims(Map.of("role", appUser.getUser().getRole().getName()))
-//                    .signWith(SignatureAlgorithm.HS256, jwtSecret)
-//                    .compact();
-//
-//            return new ResponseEntity<>(jwt, HttpStatus.OK);
-//
-//        } catch (AuthenticationException e) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
+        try {
+            AppUserDetails appUser = (AppUserDetails) authenticationProvider
+                    .authenticate(new UsernamePasswordAuthenticationToken(
+                            user.getEmail(),
+                            user.getPassword()))
+                    .getPrincipal();
+
+            String jwt = Jwts.builder()
+                    .setSubject(user.getEmail())
+                    .addClaims(Map.of("role", appUser.getUser().getRole().getName()))
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                    .compact();
+
+            return new ResponseEntity<>(jwt, HttpStatus.OK);
+
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 }
