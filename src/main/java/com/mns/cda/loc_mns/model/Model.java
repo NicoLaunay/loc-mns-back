@@ -30,7 +30,7 @@ public class Model {
     @JsonView({CompositionView.class, EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected String name;
 
-    @JsonView({LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
+    @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected String description;
 
     protected Boolean isComponent;
