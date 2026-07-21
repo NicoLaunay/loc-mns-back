@@ -3,13 +3,11 @@ package com.mns.cda.loc_mns.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.security.AppUserDetails;
+import com.mns.cda.loc_mns.security.JwtService;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,8 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @CrossOrigin
 public class AuthController {
 
-    @Value("${jwt.secret}")
-    protected String jwtSecret;
+    private final JwtService jwtService;
 
     private final IAppUserService userService;
     private final AuthenticationProvider authenticationProvider;
@@ -57,11 +54,9 @@ public class AuthController {
                             user.getPassword()))
                     .getPrincipal();
 
-            String jwt = Jwts.builder()
-                    .setSubject(user.getEmail())
-                    .addClaims(Map.of("role", appUser.getUser().getRole().getName()))
-                    .signWith(SignatureAlgorithm.HS256, jwtSecret)
-                    .compact();
+            String jwt = jwtService.generateToken(
+                    user.getEmail(),
+                    appUser.getUser().getRole().getName());
 
             return new ResponseEntity<>(jwt, HttpStatus.OK);
 

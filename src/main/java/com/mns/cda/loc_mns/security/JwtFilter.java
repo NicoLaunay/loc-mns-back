@@ -1,13 +1,12 @@
 package com.mns.cda.loc_mns.security;
 
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +24,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    @Value("${jwt.secret}")
-    protected String jwtSecret;
+    protected final JwtService jwtService;
 
     protected final UserDetailsService userDetailsService;
 
@@ -41,25 +39,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String token = request.getHeader("Authorization");
 
-        if(token != null && token.toLowerCase().startsWith("bearer ")) {
+        if (token != null && token.toLowerCase().startsWith("bearer ")) {
             String jwt = token.substring(7);
+            try {
+                String email = jwtService.extractEmail(jwt);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-            String email = Jwts.parser()
-                    .setSigningKey(jwtSecret) // Clé secrète
-                    .parseClaimsJws(jwt)
-                    .getBody()
-                    .getSubject();
+                // Pas important à comprendre
+                // arrête l'utilisateur si pas les bons droits
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-            // Pas important à comprendre
-            // arrête l'utilisateur si pas les bons droits
-            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            usernamePasswordAuthenticationToken
-                    .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
+            // si token invalide
+            } catch (JwtException e) {
+                log.warn("JWT invalide : {}", e.getMessage());
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
