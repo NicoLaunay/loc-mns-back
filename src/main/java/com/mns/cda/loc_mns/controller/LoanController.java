@@ -34,7 +34,7 @@ public class LoanController {
         return loanService.getAll();
     }
 
-    @GetMapping("/user{id}")
+    @GetMapping("/user/{id}")
     @JsonView(LoanView.class)
     @IsAdmin
     public List<Loan> getAllByUserId(@PathVariable int id) {
