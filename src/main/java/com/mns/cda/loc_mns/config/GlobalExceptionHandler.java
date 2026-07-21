@@ -5,8 +5,11 @@ import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.exception.IncoherentDateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,6 +36,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(400, e.getMessage()));
+    }
+
+    // Inputs de méthode non validés
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .map(err -> err.getField() + " : " + err.getDefaultMessage())
+                .collect(Collectors.joining(" ; "));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(400, message));
     }
 
     // Tout le reste

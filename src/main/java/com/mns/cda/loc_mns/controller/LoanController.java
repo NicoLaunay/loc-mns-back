@@ -8,6 +8,7 @@ import com.mns.cda.loc_mns.security.IsAdmin;
 import com.mns.cda.loc_mns.service.AppUserService;
 import com.mns.cda.loc_mns.service.LoanService;
 import com.mns.cda.loc_mns.view.LoanView;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,7 +81,7 @@ public class LoanController {
     @JsonView(LoanView.class)
     public ResponseEntity<Loan> create(
             @AuthenticationPrincipal AppUserDetails userDetails,
-            @RequestBody Loan newLoan) throws IllegalArgumentException {
+            @Valid @RequestBody Loan newLoan) throws IllegalArgumentException {
         if (newLoan.getStartDate().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("La date de début ne peut pas être passée");
         }
