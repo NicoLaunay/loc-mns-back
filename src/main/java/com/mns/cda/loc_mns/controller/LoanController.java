@@ -35,8 +35,15 @@ public class LoanController {
 
     @GetMapping("/user{id}")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getAllByUserId(@PathVariable int id) {
         return loanService.getAllByUserId(id);
+    }
+
+    @GetMapping("/me")
+    @JsonView(LoanView.class)
+    public List<Loan> getAllOfConnectedUser(@AuthenticationPrincipal AppUserDetails userDetails) {
+        return loanService.getAllByUserId(userDetails.getUser().getId());
     }
 
     @GetMapping("/user{id}/ended")
@@ -91,6 +98,7 @@ public class LoanController {
     }
 
     @PutMapping("/{id}")
+    @IsAdmin
     public ResponseEntity<Void> update(@PathVariable int id,
                                        @RequestBody Loan loanToUpdate) {
         loanService.update(id, loanToUpdate);
