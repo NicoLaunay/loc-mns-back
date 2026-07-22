@@ -17,4 +17,6 @@ public interface IAppUserService {
     void delete(int id);
 
     void update(int id, AppUser appUserToUpdate);
+
+    void changePassword(int id, String newPassword);
 }

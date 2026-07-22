@@ -47,26 +47,30 @@ public class LoanController {
         return loanService.getAllByUserId(userDetails.getUser().getId());
     }
 
-    @GetMapping("/user{id}/ended")
+    @GetMapping("/user/{id}/ended")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getPastByUserId(@PathVariable int id) {
         return loanService.getPastByUserId(id);
     }
 
-    @GetMapping("/user{id}/ongoing")
+    @GetMapping("/user/{id}/ongoing")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getOngoingByUserId(@PathVariable int id) {
         return loanService.getOngoingByUserId(id);
     }
 
-    @GetMapping("/user{id}/planned")
+    @GetMapping("/user/{id}/planned")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getPlannedByUserId(@PathVariable int id) {
         return loanService.getPlannedByUserId(id);
     }
 
-    @GetMapping("/user{id}/late")
+    @GetMapping("/user/{id}/late")
     @JsonView(LoanView.class)
+    @IsAdmin
     public List<Loan> getLateByUserId(@PathVariable int id) {
         return loanService.getLateByUserId(id);
     }

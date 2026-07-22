@@ -102,9 +102,18 @@ public class AppUserService implements IAppUserService {
      */
     @Override
     public void update(int id, AppUser appUserToUpdate) throws IdNotFoundException {
-        appUserDao.findById(id)
+        AppUser oldAppUser = appUserDao.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         appUserToUpdate.setId(id);
+        appUserToUpdate.setPassword(oldAppUser.getPassword());
         appUserDao.save(appUserToUpdate);
+    }
+
+    @Override
+    public void changePassword(int id, String newPassword) throws IdNotFoundException {
+        AppUser appUser = appUserDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+        appUser.setPassword(encoder.encode(newPassword));
+        appUserDao.save(appUser);
     }
 }

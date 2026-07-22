@@ -60,4 +60,11 @@ public class AppUserController {
         service.update(id, appUserToUpdate);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PutMapping("/password")
+    public ResponseEntity<Void> changePassword(@AuthenticationPrincipal AppUserDetails userDetails,
+                                               @RequestBody String newPassword) {
+        service.changePassword(userDetails.getUser().getId(), newPassword);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

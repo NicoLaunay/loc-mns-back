@@ -46,4 +46,9 @@ public class MockAppUserService implements IAppUserService {
 
     @Override
     public void update(int id, AppUser appUserToUpdate) {}
+
+    @Override
+    public void changePassword(int id, String newPassword) {
+
+    }
 }
