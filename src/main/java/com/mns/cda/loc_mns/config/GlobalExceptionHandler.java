@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IdNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleIdNotFound(IdNotFoundException e) {
 
-        log.warn("Id not found", e.getMessage());
+        log.warn("Id not found : {}", e.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException e) {
 
-        log.warn("Illegal Argument", e.getMessage());
+        log.warn("Illegal Argument : {}", e.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IncoherentDateException.class)
     public ResponseEntity<ErrorResponse> handleIncoherentDate(IncoherentDateException e) {
 
-        log.warn("Incoherent date", e.getMessage());
+        log.warn("Incoherent date : {}", e.getMessage());
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
