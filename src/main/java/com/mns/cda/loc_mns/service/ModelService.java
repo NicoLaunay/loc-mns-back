@@ -5,7 +5,6 @@ import com.mns.cda.loc_mns.dto.ModelDto;
 import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.mapper.ModelMapper;
 import com.mns.cda.loc_mns.model.Model;
-import com.mns.cda.loc_mns.repository.ModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +19,6 @@ public class ModelService {
     protected ModelDao modelDao;
 
     private final ModelMapper mapper;
-    private final ModelRepository repository;
 
     /**
      * Récupère l'ensemble des modèles enregistrés en base de données.
@@ -28,7 +26,7 @@ public class ModelService {
      * @return une liste non nulle de modèles sous forme de DTO, éventuellement vide si aucune donnée n'est présente
      */
     public List<ModelDto> getAll() {
-        return repository.findAll()
+        return modelDao.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
