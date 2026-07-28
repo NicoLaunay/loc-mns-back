@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -70,5 +72,14 @@ public interface LoanDao extends JpaRepository<Loan, Integer> {
     @Query("DELETE FROM Loan loan " +
             "WHERE loan.user.id = :userId ")
     void deleteAllByUserId(@Param("userId") int userId);
+
+    @Query("SELECT COUNT(loan) > 0 FROM Loan loan " +
+            "WHERE loan.equipment.id = :equipmentId " +
+            "AND loan.returnDate IS NULL " +
+            "AND loan.startDate < :endDate " +
+            "AND loan.endDate > :startDate")
+    boolean existsOverlappingByEquipmentId(@Param("equipmentId") int equipmentId,
+                                           @Param("startDate") LocalDate startDate,
+                                           @Param("endDate") LocalDate endDate);
 
 }

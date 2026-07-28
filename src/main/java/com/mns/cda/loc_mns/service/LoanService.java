@@ -118,6 +118,11 @@ public class LoanService {
             throw new IncoherentDateException("La date de fin doit être après la date de début");
         }
 
+        // Recontrôle serveur de la disponibilité
+        if (loanDao.existsOverlappingByEquipmentId(newLoan.getEquipment().getId(), startDate, endDate)) {
+            throw new IllegalArgumentException("Cet équipement est déjà emprunté sur la période demandée");
+        }
+
         return loanDao.save(newLoan);
 
     }
