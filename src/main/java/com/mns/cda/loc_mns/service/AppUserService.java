@@ -119,6 +119,13 @@ public class AppUserService implements IAppUserService {
         appUserDao.save(appUserToUpdate);
     }
 
+    /**
+     * Met à jour le mot de passe d'un utilisateur existant.
+     *
+     * @param id identifiant unique de l'utilisateur à mettre à jour
+     * @param newPassword nouveau MdP de l'utilisateur
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
+     */
     @Override
     public void changePassword(int id, String newPassword) throws IdNotFoundException {
         AppUser appUser = appUserDao.findById(id)
@@ -127,6 +134,14 @@ public class AppUserService implements IAppUserService {
         appUserDao.save(appUser);
     }
 
+    /**
+     * Met à jour le role d'un utilisateur existant.
+     *
+     * @param id identifiant unique de l'utilisateur à mettre à jour
+     * @param newRole nouveau role de l'utilisateur
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
+     * @throws AccessDeniedException si la modification concerne le role propriétaire
+     */
     @Override
     public void changeRole(int id, Role newRole) throws IdNotFoundException, AccessDeniedException {
         AppUser appUser = appUserDao.findById(id)
@@ -143,8 +158,15 @@ public class AppUserService implements IAppUserService {
         appUserDao.save(appUser);
     }
 
+    /**
+     * Transfère la propriété de l'application à un utilisateur existant.
+     *
+     * @param idOldOwner identifiant unique du propriétaire actuel
+     * @param idNewOwner identifiant unique du nouveau propriétaire
+     * @throws IdNotFoundException si aucun utilisateur ne correspond à l'un des identifiants
+     */
     @Override
-    public void transferOwnership(int idOldOwner, int idNewOwner) throws IdNotFoundException, AccessDeniedException {
+    public void transferOwnership(int idOldOwner, int idNewOwner) throws IdNotFoundException {
         AppUser oldOwner = appUserDao.findById(idOldOwner)
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         AppUser newOwner = appUserDao.findById(idNewOwner)
