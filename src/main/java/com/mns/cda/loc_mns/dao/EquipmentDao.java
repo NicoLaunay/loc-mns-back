@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -30,5 +29,9 @@ public interface EquipmentDao extends JpaRepository<Equipment, Integer> {
             "   AND l.startDate < :endDate" +
             "   AND l.endDate > :startDate" +
             ")")
-    List<Equipment> findAllOfModelAvailableOnPeriod(@Param("modelId") Integer modelId, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
+    List<Equipment> findAllOfModelAvailableOnPeriod(
+            @Param("modelId") Integer modelId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }

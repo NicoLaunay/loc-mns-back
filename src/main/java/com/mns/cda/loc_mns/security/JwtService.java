@@ -16,12 +16,11 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // Durée de vie du token en ms
-    private static final long EXPIRATION_MS = 3_600_000;
-
+    private static final long EXPIRATION_MS = 3_600_000; // 1 heure
     private SecretKey key;
 
-    // Construit la clé une seule fois, au démarrage, quand jwtSecret est injecté
+    // Construit la clé HMAC à partir du secret
+    // une seule fois, au démarrage, quand jwtSecret est injecté
     @PostConstruct
     void init() {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));

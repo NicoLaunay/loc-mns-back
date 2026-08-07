@@ -46,7 +46,8 @@ public class SecurityConfig {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
 
         return http.csrf(config -> config.disable()) // pas de csrf
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // on utilise pas de cookies (connexion stateless)
+                .sessionManagement(s ->
+                        s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // pas de cookies (connexion stateless)
                 .cors(config -> config.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(

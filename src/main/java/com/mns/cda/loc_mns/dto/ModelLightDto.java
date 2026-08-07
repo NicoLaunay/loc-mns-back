@@ -14,7 +14,5 @@ public record ModelLightDto(
         Boolean isComponent,
         Type type,
         List<Documentation> documentations
-) {
-
-}
+) {}
 
