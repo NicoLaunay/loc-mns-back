@@ -8,6 +8,7 @@ import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -84,9 +85,14 @@ public class AppUserService implements IAppUserService {
      * @throws IdNotFoundException si aucun utilisateur ne correspond à cet identifiant
      */
     @Override
-    public void delete(int id) throws IdNotFoundException {
-        appUserDao.findById(id)
+    public void delete(int id) throws IdNotFoundException, AccessDeniedException {
+        AppUser userToDelete = appUserDao.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+
+        if (userToDelete.getRole().getName().equals("OWNER")) {
+            throw new AccessDeniedException("Impossible de supprimer le propriétaire");
+        }
+
         modificationDao.deleteAllByUserId(id);
         requestDao.deleteAllByUserId(id);
         loanDao.deleteAllByUserId(id);
