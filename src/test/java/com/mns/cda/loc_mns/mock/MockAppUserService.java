@@ -56,4 +56,9 @@ public class MockAppUserService implements IAppUserService {
     public void changeRole(int id, Role newRole) {
 
     }
+
+    @Override
+    public void transferOwnership(int idOldOwner, int idNewOwner) {
+
+    }
 }
