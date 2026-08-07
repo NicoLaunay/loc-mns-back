@@ -51,4 +51,9 @@ public class MockAppUserService implements IAppUserService {
     public void changePassword(int id, String newPassword) {
 
     }
+
+    @Override
+    public void changeRole(int id, Role newRole) {
+
+    }
 }

@@ -1,6 +1,9 @@
 package com.mns.cda.loc_mns.service;
 
+import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.model.Role;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 
@@ -19,4 +22,8 @@ public interface IAppUserService {
     void update(int id, AppUser appUserToUpdate);
 
     void changePassword(int id, String newPassword);
+
+    void changeRole(int id, Role newRole);
+
+    void transferOwnership(int idOldOwner, int idNewOwner);
 }

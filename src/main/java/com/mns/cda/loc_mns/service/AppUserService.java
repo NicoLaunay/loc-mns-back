@@ -1,11 +1,11 @@
 package com.mns.cda.loc_mns.service;
 
-import com.mns.cda.loc_mns.dao.AppUserDao;
-import com.mns.cda.loc_mns.dao.LoanDao;
-import com.mns.cda.loc_mns.dao.ModificationDao;
-import com.mns.cda.loc_mns.dao.RequestDao;
+import com.mns.cda.loc_mns.dao.*;
 import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.model.Role;
+import com.mns.cda.loc_mns.security.IsAdmin;
+import com.mns.cda.loc_mns.security.IsOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -28,6 +28,8 @@ public class AppUserService implements IAppUserService {
     private RequestDao requestDao;
     @Autowired
     private ModificationDao modificationDao;
+    @Autowired
+    private RoleDao roleDao;
 
     /**
      * Récupère l'ensemble des utilisateurs enregistrés en base de données.
@@ -100,7 +102,7 @@ public class AppUserService implements IAppUserService {
     }
 
     /**
-     * Met à jour un utilisateur existant en remplaçant ses données.
+     * Met à jour un utilisateur existant en remplaçant ses données personnelles.
      *
      * @param id identifiant unique de l'utilisateur à mettre à jour
      * @param appUserToUpdate nouvelles données de l'utilisateur
@@ -111,6 +113,8 @@ public class AppUserService implements IAppUserService {
         AppUser oldAppUser = appUserDao.findById(id)
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         appUserToUpdate.setId(id);
+        appUserToUpdate.setRole(oldAppUser.getRole());
+        appUserToUpdate.setAccreditation(oldAppUser.getAccreditation());
         appUserToUpdate.setPassword(oldAppUser.getPassword());
         appUserDao.save(appUserToUpdate);
     }
@@ -121,5 +125,35 @@ public class AppUserService implements IAppUserService {
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
         appUser.setPassword(encoder.encode(newPassword));
         appUserDao.save(appUser);
+    }
+
+    @Override
+    public void changeRole(int id, Role newRole) throws IdNotFoundException, AccessDeniedException {
+        AppUser appUser = appUserDao.findById(id)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+
+        if (appUser.getRole().getName().equals("OWNER")) {
+            throw new AccessDeniedException("impossible de supprimer le propriétaire");
+        }
+        if (newRole.getName().equals("OWNER")) {
+            throw new AccessDeniedException("impossible d'ajouter un propriétaire'");
+        }
+
+        appUser.setRole(newRole);
+        appUserDao.save(appUser);
+    }
+
+    @Override
+    public void transferOwnership(int idOldOwner, int idNewOwner) throws IdNotFoundException, AccessDeniedException {
+        AppUser oldOwner = appUserDao.findById(idOldOwner)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+        AppUser newOwner = appUserDao.findById(idNewOwner)
+                .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+
+        oldOwner.setRole(roleDao.findAll().get(1));
+        newOwner.setRole(roleDao.findAll().get(0));
+
+        appUserDao.save(oldOwner);
+        appUserDao.save(newOwner);
     }
 }

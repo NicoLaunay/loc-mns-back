@@ -2,8 +2,10 @@ package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mns.cda.loc_mns.model.AppUser;
+import com.mns.cda.loc_mns.model.Role;
 import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
+import com.mns.cda.loc_mns.security.IsOwner;
 import com.mns.cda.loc_mns.service.IAppUserService;
 import com.mns.cda.loc_mns.view.AppUserView;
 import lombok.RequiredArgsConstructor;
@@ -65,6 +67,22 @@ public class AppUserController {
     public ResponseEntity<Void> changePassword(@AuthenticationPrincipal AppUserDetails userDetails,
                                                @RequestBody String newPassword) {
         service.changePassword(userDetails.getUser().getId(), newPassword);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/role/{id}")
+    @IsAdmin
+    ResponseEntity<Void> changeRole(@PathVariable int id,
+                                    @RequestBody Role newRole) {
+        service.changeRole(id, newRole);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/new-owner/{id}")
+    @IsOwner
+    ResponseEntity<Void> transferOwnership(@AuthenticationPrincipal AppUserDetails ownerDetails,
+                                    @PathVariable int id) {
+        service.transferOwnership(ownerDetails.getUser().getId(), id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
