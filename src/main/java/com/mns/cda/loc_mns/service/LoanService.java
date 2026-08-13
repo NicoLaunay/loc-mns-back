@@ -91,6 +91,16 @@ public class LoanService {
     }
 
     /**
+     * Récupère l'ensemble des emprunts, concernant un équipement donné, enregistrés en base de données.
+     *
+     * @param equipmentId identifiant unique de l'équipement concerné
+     * @return une liste non nulle d'emprunts, éventuellement vide si aucune donnée n'est présente
+     */
+    public List<Loan> getAllByEquipmentId(Integer equipmentId) {
+        return loanDao.findAllByEquipmentId(equipmentId);
+    }
+
+    /**
      * Récupère un emprunt à partir de son identifiant.
      *
      * @param id identifiant unique de l'emprunt recherché
