@@ -75,7 +75,7 @@ public class LoanController {
         return loanService.getLateByUserId(id);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/equipment/{id}")
     @JsonView(LoanView.class)
     @IsAdmin
     public List<Loan> getAllByEquipmentId(@PathVariable int id) {
