@@ -47,26 +47,6 @@ public interface LoanDao extends JpaRepository<Loan, Integer> {
             "AND loan.startDate > current date ")
     List<Loan> findPlannedByUserId(@Param("id") int id);
 
-    @Query("SELECT loan FROM Loan loan " +
-            "WHERE loan.equipment.id = :id")
-    List<Loan> findAllByEquipmentId(@Param("id") int id);
-
-    @Query("SELECT loan FROM Loan loan " +
-            "WHERE loan.equipment.id = :id " +
-            "AND loan.returnDate <= current date ")
-    List<Loan> findPastByEquipmentId(@Param("id") int id);
-
-    @Query("SELECT loan FROM Loan loan " +
-            "WHERE loan.equipment.id = :id " +
-            "AND loan.startDate <= current date " +
-            "AND loan.returnDate > current date ")
-    Loan findActiveByEquipmentId(@Param("id") int id);
-
-    @Query("SELECT loan FROM Loan loan " +
-            "WHERE loan.equipment.id = :id " +
-            "AND loan.startDate > current date ")
-    List<Loan> findPlannedByEquipmentId(@Param("id") int id);
-
     @Modifying
     @Transactional
     @Query("DELETE FROM Loan loan " +

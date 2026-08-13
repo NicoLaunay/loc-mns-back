@@ -71,7 +71,6 @@ class LocMnsApplicationTests {
 
     @Test
     public void callAppUserList_shouldReturnCode403() throws Exception {
-
         mvc.perform(get("/user/list"))
                 .andExpect(status().isForbidden()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
 
@@ -79,7 +78,6 @@ class LocMnsApplicationTests {
 
     @Test
     public void callAppUserListAsAnonymous_shouldReturnCode403() throws Exception {
-
         mvc.perform(get("/user/list"))
                 .andExpect(status().isForbidden()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
 
@@ -88,7 +86,6 @@ class LocMnsApplicationTests {
     @Test
     @WithMockUser(roles = {"ADMIN"})
     public void callAppUserListAsAdmin_shouldReturnCode200() throws Exception {
-
         mvc.perform(get("/user/list"))
                 .andExpect(status().isOk()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
 
@@ -98,24 +95,18 @@ class LocMnsApplicationTests {
     @WithMockUser()
     @Transactional
     public void callDeleteAppUserAsUser_shouldReturnCode403() throws Exception {
-
         AppUser user = createDeletableUser();
-
         mvc.perform(delete("/user/" + user.getId()))
-                .andExpect(status().isForbidden()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
-
+                .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(roles = {"ADMIN"})
     @Transactional
     public void callDeleteAppUserAsAdmin_shouldReturnCode200() throws Exception {
-
         AppUser user = createDeletableUser();
-
         mvc.perform(delete("/user/" + user.getId()))
-                .andExpect(status().isNoContent()); // la classe MockMvcResultMatchers (import static) permet de vérifier plein d'aspects de la réponse
-
+                .andExpect(status().isNoContent());
     }
 
     @Test
