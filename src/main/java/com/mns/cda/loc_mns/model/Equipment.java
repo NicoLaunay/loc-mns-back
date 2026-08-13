@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter // Crée les Getters
 @Setter // Crée les Setters
 @AllArgsConstructor // Crée un constructeur avec tous les attributs
@@ -37,4 +39,9 @@ public class Equipment {
     @ManyToOne
     @JsonView({EquipmentView.class, LoanView.class, RequestView.class, AppUserView.class, ModificationView.class})
     protected Location location;
+
+    @OneToMany(mappedBy = "equipment")
+    @OrderBy("startDate DESC")
+    @JsonView(EquipmentView.class)
+    protected List<Loan> loans;
 }
