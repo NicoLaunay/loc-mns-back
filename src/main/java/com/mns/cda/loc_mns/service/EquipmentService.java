@@ -1,7 +1,10 @@
 package com.mns.cda.loc_mns.service;
 
 import com.mns.cda.loc_mns.dao.EquipmentDao;
+import com.mns.cda.loc_mns.dto.EquipmentDto;
+import com.mns.cda.loc_mns.dto.EquipmentNoLoansDto;
 import com.mns.cda.loc_mns.exception.IdNotFoundException;
+import com.mns.cda.loc_mns.mapper.EquipmentMapper;
 import com.mns.cda.loc_mns.model.Equipment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +22,30 @@ public class EquipmentService {
     @Autowired
     protected EquipmentDao equipmentDao;
 
+    protected EquipmentMapper mapper;
+
     /**
      * Récupère l'ensemble des équipements enregistrés en base de données.
      *
-     * @return une liste non nulle d'équipements, éventuellement vide si aucune donnée n'est présente
+     * @return une liste non nulle d'équipements sans leurs prêts sous forme de DTO, éventuellement vide si aucune donnée n'est présente
      */
-    public List<Equipment> getAll() {
-        return equipmentDao.findAll();
+    public List<EquipmentNoLoansDto> getAll(){
+        return equipmentDao.findAll()
+                .stream()
+                .map(mapper::toNoLoansDto)
+                .toList();
+    }
+
+    /**
+     * Récupère l'ensemble des équipements enregistrés en base de données.
+     *
+     * @return une liste non nulle d'équipements sous forme de DTO, éventuellement vide si aucune donnée n'est présente
+     */
+    public List<EquipmentDto> getAllWithLoans(){
+        return equipmentDao.findAll()
+                .stream()
+                .map(mapper::toDto)
+                .toList();
     }
 
     /**
@@ -36,8 +56,11 @@ public class EquipmentService {
      * @param endDate   date de fin de la période
      * @return une liste non nulle d'équipements disponibles, éventuellement vide
      */
-    public List<Equipment> getAllOfModelAvailableOnPeriod(int modelId, LocalDate startDate, LocalDate endDate) {
-        return equipmentDao.findAllOfModelAvailableOnPeriod(modelId, startDate, endDate);
+    public List<EquipmentNoLoansDto> getAllOfModelAvailableOnPeriod(int modelId, LocalDate startDate, LocalDate endDate) {
+        return equipmentDao.findAllOfModelAvailableOnPeriod(modelId, startDate, endDate)
+                .stream()
+                .map(mapper::toNoLoansDto)
+                .toList();
     }
 
     /**
@@ -47,8 +70,22 @@ public class EquipmentService {
      * @return l'équipement correspondant
      * @throws IdNotFoundException si aucun équipement ne correspond à cet identifiant
      */
-    public Equipment get(int id) throws IdNotFoundException{
+    public EquipmentNoLoansDto get(int id) throws IdNotFoundException{
         return equipmentDao.findById(id)
+                .map(mapper::toNoLoansDto)
+                .orElseThrow(() -> new IdNotFoundException("Aucun équipement ne correspond à cet identifiant"));
+    }
+
+    /**
+     * Récupère un équipement à partir de son identifiant.
+     *
+     * @param id identifiant unique de l'équipement recherché
+     * @return l'équipement correspondant
+     * @throws IdNotFoundException si aucun équipement ne correspond à cet identifiant
+     */
+    public EquipmentDto getWithLoans(int id) throws IdNotFoundException{
+        return equipmentDao.findById(id)
+                .map(mapper::toDto)
                 .orElseThrow(() -> new IdNotFoundException("Aucun équipement ne correspond à cet identifiant"));
     }
 
@@ -58,9 +95,10 @@ public class EquipmentService {
      * @param newEquipment données de l'équipement à créer
      * @return l'équipement créé
      */
-    public Equipment create(Equipment newEquipment) {
+    public EquipmentDto create(Equipment newEquipment) {
         newEquipment.setId(null);
-        return equipmentDao.save(newEquipment);
+        equipmentDao.save(newEquipment);
+        return mapper.toDto(newEquipment);
     }
 
     /**

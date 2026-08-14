@@ -1,6 +1,8 @@
 package com.mns.cda.loc_mns.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mns.cda.loc_mns.dto.EquipmentDto;
+import com.mns.cda.loc_mns.dto.EquipmentNoLoansDto;
 import com.mns.cda.loc_mns.model.Equipment;
 import com.mns.cda.loc_mns.security.AppUserDetails;
 import com.mns.cda.loc_mns.security.IsAdmin;
@@ -27,13 +29,20 @@ public class EquipmentController {
 
     @GetMapping("/list")
     @JsonView(EquipmentView.class)
-    public List<Equipment> getAll() {
+    public List<EquipmentNoLoansDto> getAll() {
         return service.getAll();
+    }
+
+    @GetMapping("/with-loans/list")
+    @JsonView(EquipmentView.class)
+    @IsAdmin
+    public List<EquipmentDto> getAllWithLoans() {
+        return service.getAllWithLoans();
     }
 
     @GetMapping("/list-available-{modelId}")
     @JsonView(EquipmentView.class)
-    public List<Equipment> getAllOfModelAvailableOnPeriod(
+    public List<EquipmentNoLoansDto> getAllOfModelAvailableOnPeriod(
             @PathVariable Integer modelId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate end) {
@@ -42,14 +51,21 @@ public class EquipmentController {
 
     @GetMapping("/{id}")
     @JsonView(EquipmentView.class)
-    public ResponseEntity<Equipment> get(@PathVariable int id) {
+    public ResponseEntity<EquipmentNoLoansDto> get(@PathVariable int id) {
         return ResponseEntity.ok(service.get(id));
+    }
+
+    @GetMapping("/with-loans/{id}")
+    @JsonView(EquipmentView.class)
+    @IsAdmin
+    public ResponseEntity<EquipmentDto> getWithLoans(@PathVariable int id) {
+        return ResponseEntity.ok(service.getWithLoans(id));
     }
 
     @PostMapping("")
     @JsonView(EquipmentView.class)
     @IsAdmin
-    public ResponseEntity<Equipment> create(
+    public ResponseEntity<EquipmentDto> create(
             @AuthenticationPrincipal AppUserDetails userDetails,
             @RequestBody Equipment newEquipment) {
         return ResponseEntity.ok(service.create(newEquipment));
