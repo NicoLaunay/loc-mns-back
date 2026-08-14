@@ -22,7 +22,7 @@ public class EquipmentService {
     @Autowired
     protected EquipmentDao equipmentDao;
 
-    protected EquipmentMapper mapper;
+    private final EquipmentMapper mapper;
 
     /**
      * Récupère l'ensemble des équipements enregistrés en base de données.

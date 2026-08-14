@@ -29,12 +29,6 @@ public class EquipmentController {
 
     @GetMapping("/list")
     @JsonView(EquipmentView.class)
-    public List<EquipmentNoLoansDto> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/with-loans/list")
-    @JsonView(EquipmentView.class)
     @IsAdmin
     public List<EquipmentDto> getAllWithLoans() {
         return service.getAllWithLoans();
