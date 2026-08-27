@@ -1,10 +1,7 @@
 package com.mns.cda.loc_mns.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mns.cda.loc_mns.view.AppUserView;
-import com.mns.cda.loc_mns.view.LoanView;
-import com.mns.cda.loc_mns.view.ModificationView;
-import com.mns.cda.loc_mns.view.RequestView;
+import com.mns.cda.loc_mns.view.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -24,7 +21,7 @@ public class AppUser {
 
     @Id // Clé primaire
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView({AppUserView.class, LoanView.class, RequestView.class, ModificationView.class})
+    @JsonView({AppUserView.class, LoanView.class, RequestView.class, ModificationView.class, EquipmentView.class })
     protected Integer id;
 
     @NotBlank(message = "Le Prénom ne peut pas être vide")

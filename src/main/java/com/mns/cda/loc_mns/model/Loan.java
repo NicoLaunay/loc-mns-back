@@ -43,7 +43,7 @@ public class Loan {
 
     @NotNull(message = "L'Utilisateur ne peut pas être vide")
     @ManyToOne
-    @JsonView({LoanView.class, RequestView.class, EquipmentView.class})
+    @JsonView({LoanView.class, RequestView.class, EquipmentView.class, EquipmentView.class})
     protected AppUser user;
 
     @NotNull(message = "L'Equipement ne peut pas être vide")

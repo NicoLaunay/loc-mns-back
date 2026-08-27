@@ -30,6 +30,8 @@ public class AppUserService implements IAppUserService {
     private ModificationDao modificationDao;
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private AccreditationDao accreditationDao;
 
     /**
      * Récupère l'ensemble des utilisateurs enregistrés en base de données.
@@ -76,6 +78,8 @@ public class AppUserService implements IAppUserService {
     @Override
     public AppUser create(AppUser newAppUser) {
         newAppUser.setId(null);
+        newAppUser.setRole(roleDao.getReferenceById(3));
+        newAppUser.setAccreditation(accreditationDao.getReferenceById(2));
         newAppUser.setPassword(encoder.encode(newAppUser.getPassword()));
         return appUserDao.save(newAppUser);
     }
