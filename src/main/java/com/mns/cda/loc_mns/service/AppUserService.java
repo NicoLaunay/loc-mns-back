@@ -4,8 +4,6 @@ import com.mns.cda.loc_mns.dao.*;
 import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Role;
-import com.mns.cda.loc_mns.security.IsAdmin;
-import com.mns.cda.loc_mns.security.IsOwner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
