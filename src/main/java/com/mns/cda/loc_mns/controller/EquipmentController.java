@@ -30,17 +30,17 @@ public class EquipmentController {
     @GetMapping("/list")
     @JsonView(EquipmentView.class)
     @IsAdmin
-    public List<EquipmentDto> getAllWithLoans() {
-        return service.getAllWithLoans();
+    public ResponseEntity<List<EquipmentDto>> getAllWithLoans() {
+        return ResponseEntity.ok(service.getAllWithLoans());
     }
 
     @GetMapping("/list-available-{modelId}")
     @JsonView(EquipmentView.class)
-    public List<EquipmentNoLoansDto> getAllOfModelAvailableOnPeriod(
+    public ResponseEntity<List<EquipmentNoLoansDto>> getAllOfModelAvailableOnPeriod(
             @PathVariable Integer modelId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDate end) {
-        return service.getAllOfModelAvailableOnPeriod(modelId, start, end);
+        return ResponseEntity.ok(service.getAllOfModelAvailableOnPeriod(modelId, start, end));
     }
 
     @GetMapping("/{id}")
