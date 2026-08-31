@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RequestService {
 
-    @Autowired
-    protected RequestDao requestDao;
+    private final RequestDao requestDao;
 
     /**
      * Récupère l'ensemble des demandes enregistrées en base de données.

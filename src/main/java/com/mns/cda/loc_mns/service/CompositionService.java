@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompositionService {
 
-    @Autowired
-    protected CompositionDao compositionDao;
+    private final CompositionDao compositionDao;
 
     /**
      * Récupère l'ensemble des compositions enregistrées en base de données.

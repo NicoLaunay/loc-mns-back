@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LocationService {
 
-    @Autowired
-    protected LocationDao locationDao;
+    private final LocationDao locationDao;
 
     /**
      * Récupère l'ensemble des locations enregistrées en base de données.

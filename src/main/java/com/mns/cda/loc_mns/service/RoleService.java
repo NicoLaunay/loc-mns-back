@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleService {
 
-    @Autowired
-    protected RoleDao roleDao;
+    private final RoleDao roleDao;
 
     /**
      * Récupère l'ensemble des rôles enregistrés en base de données.

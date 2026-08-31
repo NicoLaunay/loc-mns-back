@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StateService {
 
-    @Autowired
-    protected StateDao stateDao;
+    private final StateDao stateDao;
 
     /**
      * Récupère l'ensemble des états enregistrés en base de données.

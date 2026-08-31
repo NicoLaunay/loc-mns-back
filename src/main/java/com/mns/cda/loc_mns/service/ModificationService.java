@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ModificationService {
 
-    @Autowired
-    protected ModificationDao modificationDao;
+    private final ModificationDao modificationDao;
 
     /**
      * Récupère l'ensemble des modifications enregistrées en base de données.

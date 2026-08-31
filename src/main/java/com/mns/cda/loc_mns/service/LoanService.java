@@ -16,11 +16,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LoanService {
 
-    @Autowired
-    protected LoanDao loanDao;
+    private final LoanDao loanDao;
 
-    @Autowired
-    protected AppUserDao userDao;
+    private final AppUserDao userDao;
 
     /**
      * Récupère l'ensemble des emprunts enregistrés en base de données.

@@ -15,8 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ModelService {
 
-    @Autowired
-    protected ModelDao modelDao;
+    private final ModelDao modelDao;
 
     private final ModelMapper mapper;
 

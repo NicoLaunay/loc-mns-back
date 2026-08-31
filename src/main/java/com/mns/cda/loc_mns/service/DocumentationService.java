@@ -13,8 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DocumentationService {
 
-    @Autowired
-    protected DocumentationDao documentationDao;
+    private final DocumentationDao documentationDao;
 
     /**
      * Récupère l'ensemble des documentations enregistrées en base de données.

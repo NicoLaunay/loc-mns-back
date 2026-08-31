@@ -14,8 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TypeService {
 
-    @Autowired
-    protected TypeDao typeDao;
+    private final TypeDao typeDao;
 
     /**
      * Récupère l'ensemble des types enregistrés en base de données.

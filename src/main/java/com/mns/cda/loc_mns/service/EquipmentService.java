@@ -19,8 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EquipmentService {
 
-    @Autowired
-    protected EquipmentDao equipmentDao;
+    private final EquipmentDao equipmentDao;
 
     private final EquipmentMapper mapper;
 

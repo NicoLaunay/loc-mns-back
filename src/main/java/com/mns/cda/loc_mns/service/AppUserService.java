@@ -18,18 +18,12 @@ public class AppUserService implements IAppUserService {
 
     private final PasswordEncoder encoder;
 
-    @Autowired
-    protected final AppUserDao appUserDao;
-    @Autowired
-    private LoanDao loanDao;
-    @Autowired
-    private RequestDao requestDao;
-    @Autowired
-    private ModificationDao modificationDao;
-    @Autowired
-    private RoleDao roleDao;
-    @Autowired
-    private AccreditationDao accreditationDao;
+    private final AppUserDao appUserDao;
+    private final LoanDao loanDao;
+    private final RequestDao requestDao;
+    private final ModificationDao modificationDao;
+    private final RoleDao roleDao;
+    private final AccreditationDao accreditationDao;
 
     /**
      * Récupère l'ensemble des utilisateurs enregistrés en base de données.
