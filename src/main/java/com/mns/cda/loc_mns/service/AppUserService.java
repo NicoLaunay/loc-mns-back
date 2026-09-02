@@ -5,7 +5,6 @@ import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Role;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,6 +58,11 @@ public class AppUserService implements IAppUserService {
     public AppUser getByEmail(String email) throws IdNotFoundException {
         return appUserDao.findByEmail(email)
                 .orElseThrow(() -> new IdNotFoundException("Aucun utilisateur ne correspond à cette adresse email"));
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        return appUserDao.existsByEmail(email);
     }
 
     /**

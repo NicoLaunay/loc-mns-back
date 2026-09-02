@@ -37,6 +37,12 @@ public class AppUserController {
         return ResponseEntity.ok(service.getByEmail(userDetails.getUsername()));
     }
 
+    @GetMapping("/email")
+    @JsonView(AppUserView.class)
+    public ResponseEntity<Boolean> emailExists(@RequestParam String email) {
+        return ResponseEntity.ok(service.emailExists(email));
+    }
+
     @GetMapping("/{id}")
     @JsonView(AppUserView.class)
     public ResponseEntity<AppUser> get(@PathVariable int id) {

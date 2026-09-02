@@ -1,9 +1,7 @@
 package com.mns.cda.loc_mns.service;
 
-import com.mns.cda.loc_mns.exception.IdNotFoundException;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Role;
-import org.springframework.security.access.AccessDeniedException;
 
 import java.util.List;
 
@@ -14,6 +12,8 @@ public interface IAppUserService {
     AppUser get(int id);
 
     AppUser getByEmail(String email);
+
+    boolean emailExists(String email);
 
     AppUser create(AppUser newAppUser);
 
