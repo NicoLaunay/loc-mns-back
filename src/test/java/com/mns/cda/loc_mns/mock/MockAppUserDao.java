@@ -21,6 +21,11 @@ public class MockAppUserDao implements AppUserDao {
     }
 
     @Override
+    public boolean existsByEmail(String email) {
+        return false;
+    }
+
+    @Override
     public void flush() {
 
     }

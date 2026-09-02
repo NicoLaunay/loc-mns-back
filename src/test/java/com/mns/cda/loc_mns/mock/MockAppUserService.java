@@ -3,11 +3,8 @@ package com.mns.cda.loc_mns.mock;
 import com.mns.cda.loc_mns.model.AppUser;
 import com.mns.cda.loc_mns.model.Role;
 import com.mns.cda.loc_mns.service.IAppUserService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 public class MockAppUserService implements IAppUserService {
 
@@ -34,6 +31,11 @@ public class MockAppUserService implements IAppUserService {
             return new AppUser();
         }
         return null;
+    }
+
+    @Override
+    public boolean emailExists(String email) {
+        return false;
     }
 
     @Override
